@@ -34,8 +34,10 @@ Yasha Pushak\inst{1}, Zongxu Mu\inst{1}
 \and Holger Hoos\inst{2,1}
 }
 \institute{
-  \orgname{Department of Computer Science,
-  The University of British Columbia}, \cny{Canada} \and
+%  \orgname{Department of Computer Science,
+%  The University of British Columbia}, \cny{Canada} \and
+	Department of Computer Science,
+	The University of British Columbia, Canada \and
   LIACS, Universiteit Leiden, The Netherlands \\ \medskip
   \email{\{ypushak,zongxumu\}@cs.ubc.ca, hh@liacs.nl} 
 }
@@ -69,29 +71,43 @@ Yasha Pushak\inst{1}, Zongxu Mu\inst{1}
 
 \maketitle
 \begin{abstract}
-The time complexity of problems and algorithms, \ie, the scaling of the time required for solving a problem instance as a function of instance size, is of key interest in theoretical computer science and practical applications. In this work, we present a fully automated tool -- Empirical Scaling Analyzer (ESA) -- for performing sophisticated and detailed empirical scaling analyses. The methodological approach underlying ESA is based on a combination of automatic function fitting and bootstrap sampling; previous versions of the methodology have been used in prior work to characterize the empirical scaling behaviour of several prominent, high-performance SAT and TSP solvers. ESA is broadly applicable to any algorithm or system, as long as running time data can be collected on sets of problem instances of various sizes. We present results from rigorous stress-testing to critically assess ESA on scenarios with challenging characteristics. %YP: CUrrently 140 words -- fits within the 150 word limit for AI Communications.
+The time complexity of algorithms, \ie, the scaling of the time required for solving a problem instance as a function of instance size, is of key interest in theoretical computer science and practical applications. In this work, we present a fully automated tool -- Empirical Scaling Analyzer (ESA) -- for performing sophisticated and detailed empirical scaling analyses. The methodological approach underlying ESA is based on a combination of automatic function fitting and bootstrap sampling; previous versions of the methodology have been used in prior work to characterize the empirical scaling behaviour of several prominent, high-performance SAT and TSP solvers. ESA is broadly applicable to any algorithm or system, as long as running time data can be collected on sets of problem instances of various sizes. We present results from rigorous stress-testing to critically assess ESA on scenarios with challenging characteristics. 
+%HH: added:
+We also give an overview of empirical scaling results obtained using ESA.
+%YP: CUrrently 140 words -- fits within the 150 word limit for AI Communications.
 \end{abstract}
 
 \section{Introduction}
 
 %Introduction of scaling of runtimes for algorithms and the empirical analysis.
-In theoretical computer science, time complexity is arguably the most
-important aspect in analyzing and understanding problems and algorithms.
+In theoretical computer science, time complexity is one of the most
+prominent concepts arising in the analysis of problems and algorithms.
 The time complexity of an algorithm describes the time required for
 solving a problem instance as a function of instance size and is traditionally
 studied by means of theoretical analysis. For instance, the
 Boolean satisfiability problem (SAT) and the travelling salesman problem
 (TSP) are two prominent $\mathcal{NP}$-hard problems, for which the best algorithms
-have exponential time-complexity in the worst case. Empirical analysis
-of time complexity has seen increasing interest, because it permits
+currently known have exponential time complexity in the worst case. 
+%HH: added:
+However, worst-case behaviour may be encountered rarely or never at all in practical 
+situations.
+Therefore, empirical analysis of time complexity has seen increasing interest, because it permits
 predicting the running times of high-performance algorithms in practice
 and may also provide useful insights into their behaviour \cite{Kun02,SubDes05,AguEtAl07}.
 
 %Description of the methodology proposed in \cite{hoos2009bootstrap}.
 
-Very few methods exist for performing empirical running time scaling analysis that handle noise and uncertainty in a principled, statistical way~\cite{Hoo09}. Common practice among empirically-oriented algorithm researchers is to run their algorithm on a few problems while varying problem instance size, with some of the more advanced methods taking means over independent runs of the algorithm on the same input instances to reduce the variance in observations~\cite{Sun09}. In some cases, the mean over tens or hundreds of runs on problems of the same size are plotted for varying instance sizes, and these points are compared against each other for two competing algorithms to show that one out-performs the other. In slightly more advanced work, standard least squares regression and curve-fitting procedures are used to fit and plot trend lines~\cite{ZapHau12}. An improvement to this practice was made by McGeoch \etal~\cite{McgEtAl02}, who introduce and evaluate several prototype methods for fitting and bounding empirical running time data with polynomial models. 
+Very few methods exist for performing empirical running time scaling analysis that handle noise and stochastic behaviour of algorithms in a principled, statistical way~\cite{Hoo09}. 
+Common practice among empirically oriented algorithm researchers is to perform relatively small numbers of algorithm runs while varying problem instance size, with some of the more advanced methods taking means over independent runs of the algorithm on the same input instances to reduce the variance in observations~\cite{Sun09}. 
+In some cases, the mean over tens or hundreds of runs on problems of the same size are plotted for varying instance sizes, and these points are compared against each other for two competing algorithms to show that one out-performs the other. 
+In slightly more advanced work, standard least squares regression and curve-fitting procedures are used to fit and subsequently visualise  trend lines~\cite{ZapHau12}. 
+An improvement to this practice was introduced by McGeoch \etal~\cite{McgEtAl02}, who described and evaluated several prototype methods for fitting and bounding empirical running time data with polynomial models. 
 
-Somewhat related to our work are methods designed to perform algorithm profiling that can automatically extract notions of problem instance size and algorithm run length; however, even these rely on the simple methods we have described above~\cite{ZapHau12,CopEtAl12,CopEtAl14}. Ultimately, the goal of performing empirical running time scaling analysis is to obtain estimates or bounds on how well we can expect an algorithm to perform for larger problem instance sizes than are used to perform the analysis. However, neither the work by McGeoch \etal~\cite{McgEtAl02} nor simple curve-fitting procedures can provide any insight into how well we can expect these models to accurately extrapolate about an algorithm's performance. 
+Somewhat related to our work are methods designed to perform algorithm profiling that can automatically extract notions of problem instance size and algorithm running time; however, even these rely on the simple methods we have described above~\cite{ZapHau12,CopEtAl12,CopEtAl14}. 
+Ultimately, the goal of performing empirical running time scaling analysis is to obtain estimates or bounds on how well we can expect an algorithm to perform for larger problem instance sizes than those used to perform the analysis.
+However, neither the work by McGeoch \etal~\cite{McgEtAl02} nor simple curve-fitting procedures address the  question how much faith we should have in the accuracy of the performance extrapolations obtained from empirical models of performance scaling.
+
+% *** HH to continue from here
 
 A significant advance in empirical running time scaling analysis was realized by Hoos~\cite{Hoo09}, who introduced a new methodology to address both gaps: they use bootstrap sampling to handle running time variance in a statistically meaningful way, and they assess extrapolation accuracy using a set of ``challenge'' instances withheld during the model fitting.  In this work, we extend this methodology and introduce it in the form of a fully automated tool: the Empirical Scaling Analyzer (ESA). ESA takes an input file providing running time data for an algorithm (referred to as target algorithm hereafter), as well as other optional files to configure ESA. ESA is not limited to fitting and assessing a single scaling model, but can deal with multiple models simultaneously -- in other words, once data collection is finished, a user can put all running time data into a file, feed it into ESA and obtain results from the scaling analysis using several parametric models. The results are presented in a technical report, which contains easy-to-read tables and figures for the scaling of the target algorithm. ESA also automatically interprets the results and assesses whether a model describes the running data well, using a decision model newly developed here.
 
@@ -99,7 +115,7 @@ Many state-of-the-art solvers for challenging computational problems are highly 
 
 We believe that ESA will prove to be useful for other researchers who want to study the empirical time complexity of other algorithms. The tool is available as an easy-to-use online service at \url{www.cs.ubc.ca/labs/beta/Projects/ESA} and can also be downloaded and installed locally as a command-line tool with additional functionality.
 
-This work contains two main contributions: we present ESA (see Section~\ref{sec:Implementation and Use}): a fully-automated implementation of an advanced empirical running time scaling analysis methodology~\cite{Hoo09} (see Section~\ref{sec:method} for a summary of the methodology and our improvements to it); and we summarize the results of performing rigorous tests with ESA on challenging scenarios (see Sections~\ref{sec:Stress Testing} and~\ref{sec:Lower Order Terms}). Improvements to ESA include a nested bootstrap sampling procedure for randomized target algorithms and a novel method for automatically assessing the quality of fitted models (described in Section~\ref{sec:auto-interpretation}). To design challenging benchmarking tests for ESA, we also introduce a novel method for generating approximately realistic, artificial running times (see Section~\ref{sec:AA}). We further discuss several successful applications of ESA's methodology in previous work (see Section~\ref{sec:Successful Applications}), demonstrating its power and ability to provide meaningful insights in a diverse set of applications. Finally, we provide concluding remarks and possible future extensions to ESA's methodology (see Section~\ref{sec:Conclusion}).
+This work contains two main contributions: we present ESA (see Section~\ref{sec:Implementation and Use}): a fully-automated implementation of an advanced empirical running time scaling analysis methodology~\cite{Hoo09} (see Section~\ref{sec:method} for a summary of the methodology and our improvements to it); and we summarize the results of performing rigorous experiments with ESA on challenging scenarios (see Sections~\ref{sec:Stress Testing} and~\ref{sec:Lower Order Terms}). Improvements to ESA include a nested bootstrap sampling procedure for randomized target algorithms and a novel method for automatically assessing the quality of fitted models (described in Section~\ref{sec:auto-interpretation}). To design challenging benchmarking tests for ESA, we also introduce a novel method for artificially generating realistic running time data (see Section~\ref{sec:AA}). We further discuss several successful applications of the methodology underlying ESA in previous work (see Section~\ref{sec:Successful Applications}), demonstrating its power and ability to provide meaningful insights in a diverse set of applications. Finally, we provide concluding remarks and possible future extensions to ESA (see Section~\ref{sec:Conclusion}).
 
 
 \section{Methodology}
@@ -557,7 +573,8 @@ which can take a long time to produce. Thus, it will be important to design a wa
 
 
 \section*{Acknowledgements}
-YP was supported by an NSERC Vanier Scholarship. HH acknowledges funding through an NSERC Discovery Grant, CFI JLEF funding and startup funding from Universiteit Leiden. \todo{Did Zongxu have funding that needs to be added here?}
+YP was supported by an NSERC Vanier Scholarship. HH acknowledges funding through an NSERC Discovery Grant, CFI JLEF funding and startup funding from Universiteit Leiden. 
+% \todo{Did Zongxu have funding that needs to be added here? HH: No.}
 
 % TODO: will be deleted and changed to Acknowledgements in the final version
 
