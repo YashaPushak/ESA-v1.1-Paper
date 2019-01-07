@@ -108,7 +108,7 @@ Ultimately, the goal of performing empirical running time scaling analysis is to
 However, neither the work by McGeoch \etal~\cite{McgEtAl02} nor simple curve-fitting procedures address the  question how much faith we should have in the accuracy of the performance extrapolations obtained from empirical models of performance scaling.
 
 A significant advance in empirical running time scaling analysis was achieved by Hoos~\cite{Hoo09}, who introduced a new methodology to address both shortcomings by using
-%HH: You should slightly reword above to make it very clear to the reader what the two shortcomings are.
+%HH: (TODO) You should slightly reword above to make it very clear to the reader what the two shortcomings are.
 a complex bootstrap sampling procedure to handle variability in running time in a statistically meaningful way, and by assessing extrapolation accuracy using a set of ``challenge'' instances withheld during the model fitting.  
 In our work presented here, we extend this methodology and introduce it in the form of a fully automated tool: the Empirical Scaling Analyzer (ESA). 
 ESA takes an input file providing running time data for an algorithm (referred to as target algorithm hereafter), as well as other optional files to configure ESA. 
