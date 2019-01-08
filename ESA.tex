@@ -152,8 +152,7 @@ Finally, we provide some general conclusions and briefly discuss future extensio
 \label{sec:method}
 
 % advanced empirical scaling analysis
-The underlying methodology for ESA was first proposed by Hoos~\cite{Hoo09}
-and is illustrated in Figure~\ref{fig:methodology}.
+The methodology underlying ESA is illustrated in Figure~\ref{fig:methodology} \cite{Hoo09}.
 \begin{figure}[t]
 \noindent \centering{}\tikzstyle{decision} = [diamond, draw, fill=blue!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
 \tikzstyle{smallblock} = [rectangle, draw, fill=blue!20, text width=3em, text centered, rounded corners, minimum height=2em]
@@ -190,20 +189,24 @@ Here, we further extend the original methodology to accurately handle variance b
 %\subsection{Automated Interpretation of Scaling Results}
 \label{sec:auto-interpretation}
 
-ESA automatically generates interpretations for the results of the scaling analysis. This is done by assessing how well a model fits the given challenge data, based on the percentage of challenge instance sizes for which the model predicts the corresponding running times reasonably accurately. If a model produces good predictions for most challenge sizes, then the model should be accepted as a good fit. Technically, we define a very good prediction, or a \emph{strongly consistent prediction}, as one for which the predicted bootstrap confidence interval contains the observed challenge confidence interval, and we define a good prediction, or a \emph{weakly consistent prediction}, as one for which the bootstrap confidence intervals are overlapping.
+ESA automatically generates interpretations for the results of the scaling analysis. This is done by assessing how well a model fits the given challenge data, based on the percentage of challenge instance sizes for which the model predicts the corresponding running times reasonably accurately. If a model produces good predictions for most challenge sizes, then the model should be accepted as a good fit. Technically, we define a very good prediction, or a \emph{strongly consistent prediction}, as one for which the predicted bootstrap confidence interval contains the observed challenge confidence interval, and we define a good prediction, or a \emph{weakly consistent prediction}, as one for which the predicted and observed bootstrap confidence intervals are overlapping.
 
-Our interpretation procedure especially emphasizes the challenge points for larger instance sizes, as those provide more information regarding whether the model predictions scale with instance size. The detailed criteria, which we designed based on extensive experiments with several algorithms (both real and artificial), are as follows:
+Our interpretation procedure especially emphasizes the challenge points for larger instance sizes, as those provide more information regarding whether the model predictions scale with instance size. The detailed criteria, which we 
+designed based on extensive experiments with several algorithms (both real and artificial), are as follows:
+%HH: I've made some changes in the following, in light of the fact that we technically define consistency etc. for predictions, not for intervals (although we do it based on confidence intervals) - TODO: check
 \begin{itemize}
-\item \textbf{very good fit}: the model predicts very well for most of the challenge sizes; more precisely, $\geq 90\%$ of the challenge size predicted intervals are strongly consistent or $\geq 90\%$ of the larger half of the challenge size predicted intervals are strongly consistent and $ \geq 90\%$ of all of the challenge size predicted intervals are weakly consistent;
+\item \textbf{very good fit}: the model predicts very well for most of the challenge sizes; more precisely, $\geq 90\%$ of the predictions for challenge sizes are strongly consistent, or $\geq 90\%$ of the predictions for the larger half of the challenge sizes are strongly consistent and $ \geq 90\%$ of all of the predictions for all challenge sizes are weakly consistent;
 
-\item \textbf{fair fit}: the model predicts well for most of the challenge sizes; more precisely, $\geq 90\%$ of the challenge size predicted intervals or $\geq 90\%$ of the larger half of the challenge size predicted intervals are weakly consistent;
+\item \textbf{fair fit}: the model predicts well for most of the challenge sizes; more precisely, $\geq 90\%$ of the predictions for challenge sizes or $\geq 90\%$ of predicions for the larger half of the challenge sizes are weakly consistent;
 
-\item \textbf{tends to over-/under-estimate}: the model predictions are over-/under-estimates or are weakly consistent with most of the observed challenge size intervals; more precisely, $> 10\%$ of the challenge size predicted intervals are disjoint from the observed intervals and $\geq 90\%$ of the challenge size predicted intervals are above/below or are consistent with the observed intervals;
+\item \textbf{tends to over-/under-estimate}: the model predictions are over-/under-estimates or are weakly consistent with observed running time data for most of the challenge instance sizes; more precisely, $> 10\%$ of the confidence intervals for predictions on challenge instance sizes are disjoint from the confidence intervals for observed running time data and $\geq 90\%$ of the predicted intervals are above/below or are consistent with the observed intervals;
 
-\item \textbf{over-/under-estimate}: the model predictions are over-/under-estimates of a large percentage of the challenge sizes; more precisely, $\geq 70\%$ of the challenge sized predicted intervals or $\geq 70\%$ of the larger half of the challenge sized predicted intervals are above/below the observed intervals.
+\item \textbf{over-/under-estimate}: the model predictions are over-/under-estimates of a large percentage of the challenge sizes; more precisely, $\geq 70\%$ of the confidence intervals for predictions on all challenge instance sizes or $\geq 70\%$ of those on the larger half of the challenge sizes are above/below the observed intervals.
+
+%HH: Missing: some explanation why these classes were defined in this way - TODO: add brief explanation
 
 \end{itemize}
-These criteria are combined into the fully automated interpretation procedure illustrated in Figure \ref{fig:ESA-auto-interpretation}. Note that when medians (or other statistics) are not definitely known (due to instances with unknown running times), we create bootstrap confidence intervals for the medians that combine both sources of uncertainty, and we compare these intervals against the predicted bootstrap intervals. To be more precise, we create intervals combining both sources of uncertainty using an optimistic-pessimistic strategy whereby we treat an unknown running time as zero in a lower bound and as infinity in an upper bound. Then, we say an observed challenge instance size interval is below the predicted bootstrap interval, if the upper bound of the observed bootstrap confidence interval is smaller than the lower bound of the predicted bootstrap interval.
+These criteria are combined into the fully automated interpretation procedure illustrated in Figure \ref{fig:ESA-auto-interpretation}. Note that when medians (or other statistics) are not definitely known (due to instances with unknown running times), we create bootstrap confidence intervals for the medians that combine both sources of uncertainty, and we compare these intervals against those for the predicted running times. To be more precise, we determine confidence intervals combining both sources of variability (due to differences between problem instances of a given size and due to randomness in the algorithm) using an optimistic-pessimistic strategy, whereby we treat an unknown running time as zero in a lower bound and as infinity in an upper bound. Then, we say a bootstrap confidence interval $I_o$ for observed running time on a given challenge instance size is below the corresponding confidence interval $I_p$ for predicted running time, if the upper bound of $I_o$ is smaller than the lower bound of $I_p$.
 
 \begin{figure*}[t]
 \noindent \begin{centering}
