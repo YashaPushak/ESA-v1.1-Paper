@@ -1,84 +1,98 @@
-%% LyX 2.1.4 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
-\documentclass[british]{llncs}
+% PLEASE USE THIS FILE AS A TEMPLATE
+% Check file iosart2x.tex for more examples
+
+% add. options: [seceqn,secthm,crcready,onecolumn]
+\documentclass[aic]{iosart2x}
+
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 \usepackage{array}
-\usepackage{url}
+%\usepackage{url}
 \usepackage{multirow}
 \usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
-\captionsetup{compatibility=false}
+%\usepackage{caption}
+%\usepackage{subcaption}
+%\captionsetup{compatibility=false}
 \usepackage{verbatim}
-
-
-\pagestyle{plain}
-
-\makeatletter
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
-%% Because html converters don't know tabularnewline
-\providecommand{\tabularnewline}{\\}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-
 
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,positioning,arrows.meta}
 
-\title{Empirical Scaling Analyzer:}
-\subtitle{An Automated System for Empirical Analysis of Performance Scaling}
-\author{
-Yasha Pushak\inst{1}, Zongxu Mu\inst{1}
-\and Holger Hoos\inst{2,1}
-}
-\institute{
-%  \orgname{Department of Computer Science,
-%  The University of British Columbia}, \cny{Canada} \and
-	Department of Computer Science,
-	The University of British Columbia, Canada \and
-  LIACS, Universiteit Leiden, The Netherlands \\ \medskip
-  \email{\{ypushak,zongxumu\}@cs.ubc.ca, hh@liacs.nl} 
-}
-
-
-\makeatother
-
-\usepackage{babel}
+%\usepackage{babel}
 \usepackage{listings}
 \renewcommand{\lstlistingname}{Listing}
 
-\begin{document}
+%\usepackage{dcolumn}
+%\usepackage{endnotes}
+
+%%%%%%%%%%% Put your definitions here
+
 \newcommand{\eg}{\emph{e.g.}}
 \newcommand{\ie}{\emph{i.e.}}
 \newcommand{\etal}{\emph{et al.}}
 \newcommand{\todo}[1]{\textcolor{red}{\bf [TODO: #1]}}
 %\renewcommand{\todo}[1]{}
 \newcommand{\yp}[1]{\textcolor{blue}{#1}}
-\renewcommand{\note}[1]{\textcolor{green}{[Note: #1]}}
+\newcommand{\note}[1]{\textcolor{green}{[Note: #1]}}
 \newcommand{\append}[1]{\textcolor{violet}{[Appendix?] #1}}
 \newcommand{\zm}[1]{#1}
 \newcommand{\hide}[1]{}
 \newcommand{\figtitle}[1]{\textbf{#1}\par\medskip}
 \renewcommand{\figtitle}[1]{}
 
+%%%%%%%%%%% End of definitions
 
-%Possible Journals for submission:
-% 1. AI Communications
-% 2. International Journal on Artificial Intelligence Tools
+\pubyear{0000}
+\volume{0}
+\firstpage{1}
+\lastpage{1}
+
+\begin{document}
 
 
-\maketitle
+
+\begin{frontmatter}
+
+%\pretitle{}
+\title{Empirical Scaling Analyzer:}
+\runningtitle{Empirical Scaling Analyzer}
+\subtitle{An Automated System for Empirical Analysis of Performance Scaling}
+
+% For one author:
+%\author{\inits{N.}\fnms{Name1} \snm{Surname1}\ead[label=e1]{first@somewhere.com}}
+%\address{Department first, \orgname{University or Company name},
+%Abbreviate US states, \cny{Country}\printead[presep={\\}]{e1}}
+%\runningauthor{N. Surname1}
+
+% Two or more authors:
+\author[A]{\inits{Y.}\fnms{Yasha} \snm{Pushak}\ead[label=e1]{ypushak@cs.ubc.ca}},
+\author[A]{\inits{Z.}\fnms{Zongxu} \snm{Mu}\ead[label=e2]{zongxumu@cs.ubc.ca}}
+and
+\author[B,A]{\inits{H.H.}\fnms{Holger H.} \snm{Hoos}\ead[label=e3]{hh@liacs.nl}%
+\thanks{Corresponding author. \printead{e3}.}}
+\runningauthor{Y. Pushak et al.}
+\address[A]{Department of Computer Science, \orgname{The University of British Columbia},
+BC, \cny{Canada}\printead[presep={\\}]{e1}}
+\address[B]{LIACS, \orgname{Universiteit Leiden}, \cny{The Netherlands}\printead[presep={\\}]{e2,e3}}
+
 \begin{abstract}
-The time complexity of algorithms, \ie, the scaling of the time required for solving a problem instance as a function of instance size, is of key interest in theoretical computer science and practical applications. In this work, we present a fully automated tool -- Empirical Scaling Analyzer (ESA) -- for performing sophisticated and detailed empirical scaling analyses. The methodological approach underlying ESA is based on a combination of automatic function fitting and bootstrap sampling; previous versions of the methodology have been used in prior work to characterize the empirical scaling behaviour of several prominent, high-performance SAT and TSP solvers. ESA is broadly applicable to any algorithm or system, as long as running time data can be collected on sets of problem instances of various sizes. We present results from rigorous stress-testing to critically assess ESA on scenarios with challenging characteristics. 
+The time complexity of algorithms, \ie, the scaling of the time required for solving a problem instance as a function of instance size, is of key interest in theoretical computer science and practical applications. In this work, we present a fully automated tool -- Empirical Scaling Analyzer (ESA) -- for performing sophisticated and detailed empirical scaling analyses. The methodological approach underlying ESA is based on a combination of automatic function fitting and bootstrap sampling; previous versions of the methodology have been used in prior work to characterize the empirical scaling behaviour of several prominent, high-performance SAT and TSP solvers. ESA is applicable to any algorithm or system, as long as running time data can be collected on sets of problem instances of various sizes. We present results from rigorous stress-testing to critically assess ESA on scenarios with challenging characteristics. 
 %HH: added:
 We also give an overview of empirical scaling results obtained using ESA.
-%YP: CUrrently 140 words -- fits within the 150 word limit for AI Communications.
+%YP: Currently 151 words -- just over the 150 word limit for AI Communications. 
 \end{abstract}
 
-\section{Introduction}
+\begin{keyword}
+\kwd{Empirical scaling analysis}
+\kwd{Running time scaling}
+\end{keyword}
 
+\end{frontmatter}
+
+%%%%%%%%%%% The article body starts:
+
+
+\section{Introduction}
 %Introduction of scaling of runtimes for algorithms and the empirical analysis.
 In theoretical computer science, time complexity is one of the most
 prominent concepts arising in the analysis of problems and algorithms.
@@ -164,7 +178,7 @@ and is illustrated in Figure~\ref{fig:methodology}.
 \path [line] (bootstrap) -- (report);
 \end{tikzpicture}
 }
-\caption{\label{fig:methodology}Empirical scaling analysis approach underlying ESA.}
+\caption{Empirical scaling analysis approach underlying ESA.}\label{fig:methodology}
 \end{figure}
 Scaling models are fitted using the Levenberg-Marquardt algorithm, a prominent numerical optimization procedure,
 on a set of running time data called the support set. The scaling models thus obtained are challenged using previously unseen running time data for larger problem instances (called the challenge data). Then, bootstrap sampling is used to quantify the confidence we can have in the scaling models. In particular, we re-sample, with replacement, the running times for each support instance size. We use these bootstrap samples to obtain a distribution of fitted models for each parametric model. These model distributions are then used to generate a set of distribution of predictions for the challenge instance sizes, one for each parametric model. Bootstrap percentile confidence intervals (for a given confidence level $\alpha$) are then computed for each challenge instance size and for each parametric scaling model. Finally, these intervals are used to determine whether or not a parametric model should be rejected at confidence level $\alpha$.
@@ -192,7 +206,7 @@ Our interpretation procedure especially emphasizes the challenge points for larg
 \end{itemize}
 These criteria are combined into the fully automated interpretation procedure illustrated in Figure \ref{fig:ESA-auto-interpretation}. Note that when medians (or other statistics) are not definitely known (due to instances with unknown running times), we create bootstrap confidence intervals for the medians that combine both sources of uncertainty, and we compare these intervals against the predicted bootstrap intervals. To be more precise, we create intervals combining both sources of uncertainty using an optimistic-pessimistic strategy whereby we treat an unknown running time as zero in a lower bound and as infinity in an upper bound. Then, we say an observed challenge instance size interval is below the predicted bootstrap interval, if the upper bound of the observed bootstrap confidence interval is smaller than the lower bound of the predicted bootstrap interval.
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \noindent \begin{centering}
 \vspace*{-3mm}
 {\small{}\tikzstyle{decision} = [diamond, draw, fill=blue!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
@@ -248,8 +262,8 @@ These criteria are combined into the fully automated interpretation procedure il
 
 \par\end{centering}{\small \par}
 
-\caption{\label{fig:ESA-auto-interpretation} Procedure used by ESA for automatic interpretation of scaling analysis results. Details on the conditions are provided in the main text.}
-\end{figure}
+\caption{Procedure used by ESA for automatic interpretation of scaling analysis results. Details on the conditions are provided in the main text.}\label{fig:ESA-auto-interpretation}
+\end{figure*}
 
 
 \section{Running ESA}
@@ -265,7 +279,7 @@ An excerpt of an input file for ESA is shown in Figure~\ref{fig:Excerpt-ESA-inpu
 
 \begin{figure}[t]
 \begin{lstlisting}[basicstyle={\scriptsize\ttfamily}]
-# instance name, size, datum (running time), datum, datum
+#instance, size, datum (running time), datum, datum
 portgen-500-1000.tsp, 500, 2.3, 2.54, 2.09
 portgen-500-100.tsp, 500, 2.58, 2.28, 2.71
 portgen-500-101.tsp, 500, 2.36, 2.44, 2.53
@@ -279,7 +293,7 @@ portgen-4500-11.tsp, 4500, inf, inf, inf
 #instances,4500,100
 \end{lstlisting}
 \vspace*{-3mm}
-\caption{\label{fig:Excerpt-ESA-input}Example input file for ESA, where ``...'' represents omitted lines analogous to those shown.}
+\caption{Example input file for ESA, where ``...'' represents omitted lines analogous to those shown.}\label{fig:Excerpt-ESA-input}
 \end{figure}
 
 ESA also takes as input a configuration file, containing details on the target algorithm (algName), the instance distribution (instName), the number of support instance sizes (numTrainingData), \emph{etc.}  Each line of this file specifies one parameter setting in the format of  ``\lstinline[basicstyle={\ttfamily}]!name : value!''.
@@ -299,7 +313,7 @@ data, respectively;
 \item a table presenting fitted models and corresponding root mean squared error (RMSE) values, as illustrated
 in Table~\ref{tab:ESA-fitted-models};
 \begin{table}[t]
-\caption{Fitted models example}
+\caption{Fitted models example} \label{tab:ESA-fitted-models}
 \begin{centering}
 \scalebox{0.75}{%
 \begin{tabular}{ccccc}
@@ -315,23 +329,18 @@ in Table~\ref{tab:ESA-fitted-models};
 \end{tabular}}\medskip{}
 \par
 \end{centering}
-
-\label{tab:ESA-fitted-models}
-
 \end{table}
 
 \item a figure showing running times, fitted models and corresponding bootstrap
 confidence intervals for each model, as illustrated in Figure \ref{fig:ESA-fitted-models};
-\begin{figure}[t]
+\begin{figure*}[t]
 \noindent \begin{centering}
 \includegraphics[width=0.7\textwidth]{EAX_fittedModels} \vspace{-5mm}
 
 \par\end{centering}
 
-\caption{\label{fig:ESA-fitted-models}Example output of ESA -- 
-running times, fitted models and corresponding bootstrap confidence
-intervals.}
-\end{figure}
+\caption{Example output of ESA -- running times, fitted models and corresponding bootstrap confidence intervals.}\label{fig:ESA-fitted-models}
+\end{figure*}
 
 \item a figure showing the residues of the fitted models;
 \item a table of bootstrap confidence intervals for all model parameters,
@@ -365,8 +374,8 @@ Solver  & Model  & Confidence interval of $a$  & Confidence interval of $b$ \tab
 \hline 
  \multirow{2}{*}{Solver} & \multirow{2}{*}{Model} & \multicolumn{2}{c|}{Support RMSE}  & \multicolumn{2}{c}{Challenge RMSE} \tabularnewline & & Median & Confidence Interval & Median & Confidence Interval \tabularnewline\hline 
 \hline 
-\multirow{3}{*}{EAX (default)} & Exp. & $1.0888$ & $\left[1.0316,1.143\right]$ & $1548$ & $\left[1406.7,1693.6\right]$ \tabularnewline 
- & RootExp. & $\mathbf{0.61987}$ & $\mathbf{\left[0.56355,0.67517\right]}$ & $\mathbf{81.248}$ & $\mathbf{\left[21.671,159.93\right]}$ \tabularnewline 
+\multirow{3}{*}{EAX} & Exp. & $1.0888$ & $\left[1.0316,1.143\right]$ & $1548$ & $\left[1406.7,1693.6\right]$ \tabularnewline 
+& RootExp. & $\mathbf{0.61987}$ & $\mathbf{\left[0.56355,0.67517\right]}$ & $\mathbf{81.248}$ & $\mathbf{\left[21.671,159.93\right]}$ \tabularnewline 
  & Poly. & $0.15986$ & $\left[0.11977,0.20373\right]$ & $274.78$ & $\left[203.18,356.73\right]$ \tabularnewline 
 \hline 
 \end{tabular}}\medskip{}
@@ -379,14 +388,14 @@ Solver  & Model  & Confidence interval of $a$  & Confidence interval of $b$ \tab
 
 \item two tables, for each model, of bootstrap confidence intervals for
 observed and predicted running times, one for support data and the
-other for challenge data, as illustrated in Table \ref{tab:ESA-bootstrap-support}.
-\begin{table}[t]
+other for challenge data, as illustrated in Tables~\ref{tab:ESA-bootstrap-support} and~\ref{tab:ESA-bootstrap-challenge}.
+\begin{table*}[t]
 \begin{centering}
 
 \par\end{centering}
 
 \begin{centering}
-\caption{Observed and predicted intervals example}
+\caption{Observed and predicted support confidence intervals example}
 \label{tab:ESA-bootstrap-support}
 \scalebox{0.75}{%
 \begin{tabular}{ccccc}
@@ -402,6 +411,13 @@ other for challenge data, as illustrated in Table \ref{tab:ESA-bootstrap-support
  & 1500  & $\left[21.97,22.32\right]$  & $21.57$  & $\left[21.29,21.91\right]$ \tabularnewline
 \hline 
 \end{tabular}}\medskip{}
+\par\end{centering}
+\end{table*}
+
+\begin{table*}[t]
+\begin{centering}
+\caption{Observed and predicted challenge confidence intervals example}
+\label{tab:ESA-bootstrap-challenge}
 \scalebox{0.75}{%
 \begin{tabular}{ccccc}
 \hline 
@@ -419,21 +435,19 @@ other for challenge data, as illustrated in Table \ref{tab:ESA-bootstrap-support
 
 \par\end{centering}
 
-Example output of ESA -- bootstrap
-confidence intervals for observed running times and predictions from the fitted root-exponential model for the support data (upper table) and the challenge data (lower table); ``...'' represents omitted lines analogous to those shown.
-\end{table}
+%Example output of ESA -- bootstrap confidence intervals for observed running times and predictions from the fitted root-exponential model for the support data (upper table) and the challenge data (lower table); ``...'' represents omitted lines analogous to those shown.
+\end{table*}
  
 \end{itemize}
 A snapshot of the report generated by ESA using the default {\LaTeX}
 template is shown in Figure \ref{fig:Snapshot-ESA-output}, the full report can be found at \url{www.cs.ubc.ca/labs/beta/Projects/ESA/samples/scaling\_EAX.pdf}. 
-\begin{figure}[t]
+\begin{figure*}[t]
 \begin{centering}
 \includegraphics[width=0.48\textwidth]{ESA_output_1}\includegraphics[width=0.48\textwidth]{ESA_output_2}
 \par\end{centering}
 
-\caption{\label{fig:Snapshot-ESA-output}A snapshot of the 7-page technical report generated
-by ESA.}
-\end{figure}
+\caption{A snapshot of the 7-page technical report generated by ESA.}\label{fig:Snapshot-ESA-output}
+\end{figure*}
 
 \section{Benchmark sets}
 \label{sec:AA}
@@ -455,7 +469,7 @@ By varying properties of artificially generated running time data sets (see Sect
 We generated two data sets using a polynomial and an exponential scaling model. For the polynomial model we used $2.58\cdot 10^{-10} \cdot n^{3.37}$, which tended to fit some preliminary TSP data. We fit the exponential model to data from the polynomial model to make them as similar as possible. We generated running times for 21 instance sizes: 500, 600, ..., 1900, 2000, 2500, ..., 4500. We used 16 support instance sizes, 5 challenge instance sizes, 500 instances per size and 10 independent runs per instance. We set ESA's parameters to their default values, using 1\,000 bootstrap samples, an alpha value of 95 and studied the median running time of the per-instance medians. 
 Since the instance sets should be viewed as a sample drawn from a random distribution, we created a very large data set with 10\,000 instances per size and 100 independent runs per instance. This allowed us to perform 1\,000 independent runs of ESA on various sub samples of the original data set with the desired properties.
 
-In the following, we provide only a high-level summary of our findings, and distill from these results our advice on best-practices for using ESA. For a substantially more detailed discussion and presentation of the results, please see our online, supplementary material~\todo{Move online. Currently available at https://www.overleaf.com/6216557917nztjdzchjhxp }
+In the following, we provide only a high-level summary of our findings, and distill from these results our advice on best-practices for using ESA. For a substantially more detailed discussion and presentation of the results, please see our online, supplementary material available at \url{http://www.cs.ubc.ca/labs/beta/Projects/ESA}~\todo{Not yet online (though ESA v1.1 is). Currently available at https://www.overleaf.com/6216557917nztjdzchjhxp}
 
 \textbf{What happens when we decrease the number of support instances per instance size?}
 ESA can identify that the correct model fits the data even with a very small number of instances per size; however, this is because the size of the bootstrap confidence intervals for the fitted model predictions grows much more quickly than the size of the confidence intervals for the observed challenge statistics, \ie{}, all of the fitted models fit the data very well for small instance sets. In particular, we found that for extremely small numbers of support instances per size (say 10), the predicted confidence intervals were up to 3 or 4 orders of magnitude larger than the observed intervals (for the polynomial model on the polynomial data set), and up to 4 or 5 orders of magnitude larger than when 1\,000 instances were used per instance size.
@@ -488,34 +502,34 @@ We also provided ESA with a four parameter, two term polynomial model of the for
 In the following, we present a selected subset of the results that illustrates our main observations. 
 
 \textbf{What happens when the transition is early?}
-\begin{figure}[t!]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=0.7\textwidth]{fittedModels-2-5-14-16s.pdf}
-\caption{\textbf{Early transition example:} generated using $4.8\cdot 10^{-15} \cdot x^5 + 9.6\cdot 10^{-7} \cdot x^2$ with 16 support instance sizes.}
+\caption{\textbf{Early transition example:} generated using $4.8\cdot 10^{-15} \cdot x^5 + 9.6\cdot 10^{-7} \cdot x^2$ with 16 support instance sizes. \note{We'll need to decide whether or not we want colour figures. They cost extra, but you have to contact them to obtain a quote for the price. I think for these three figures in particular it would be nearly impossible to understand them without colour (and I'm not confident that I could make them legible without).}}
 \label{fig:AA-competing-2-5-14-16s}
-\end{figure}
+\end{figure*}
 When the transition between terms occurs among the small support instance sizes, the fit of the single term model is able to capture the asymptotic scaling relatively accurately, \eg{}, see Figure~\ref{fig:AA-competing-2-5-14-16s}, where a polynomial model of degree 4.97 fits the challenge data very well. In comparison, the two term polynomial model provides a better fit for the small instance sizes, but yields larger predicted bootstrap intervals. For this model ESA fit a degree of 2.00 for one of the polynomial terms and a degree of 5.14 for the other, and reported that this model also fit the data very well. 
 
 These results are positive, but we note that ESA does have some difficulty fitting the 4 parameter model. One indication is that higher-quality default parameter values are needed for the two term model than for single term models. Another sign can be seen by looking at the confidence intervals for the degrees of each term in the four parameter model, $[1.41,4.87]$ and $[4.77,6.26]$. These intervals are both larger than the single term model's interval and we see that they overlap, that is, in some cases the degrees were both large. This likely corresponds to a large support instance size outlier that caused ESA to over-fit. 
 
 \textbf{What happens when the transition is mid?}
-\begin{figure}[t!]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=0.7\textwidth]{fittedModels-2-5-15-16s.pdf}
 \caption{\textbf{Mid transition example:} generated using $4.8\cdot 10^{-16} \cdot x^5 + 9.6\cdot 10^{-7} \cdot x^2$ with 16 support instance sizes.}
 \label{fig:AA-competing-2-5-15-16s}
-\end{figure}
+\end{figure*}
 As the transition between the two terms moves closer to the large end of the support instance sizes, the quality of the ESA report starts to degrade. Overall, ESA is still able to do quite well as long as the location of the transition is completely covered by the support instance sizes, as seen in Figure~\ref{fig:AA-competing-2-5-15-16s}, where the predicted bootstrap intervals for both types of polynomial models capture the observed challenge data. The single term model is reported to ``fit the data very well'' despite that it does not quite capture the true degree of the asymptotic scaling in its interval $[4.00,4.74]$. On the other hand, the two term model, which is only reported to ``tend to fit the data'', does capture the true asymptotic scaling with the intervals $[1.50,2.30]$ and $[4.78,7.06]$. 
 
 In this case, we also see that ESA had less trouble distinguishing between the two polynomial terms when fitting the two term polynomial model, since the bootstrap intervals for the degrees of the two terms are disjoint. However, we also see that the size of the predicted bootstrap intervals for the two term model has increased significantly. We believe this is because there are only a small number of instance sizes past the midpoint of the transition, hence there is less data to help ESA recover from the presence of a single outlier. When we decrease the number of support instance sizes (data not shown) we find that the predicted bootstrap intervals are similarly large for the two term polynomial; however, the single term model is unable to accurately capture the asymptotic scaling.
 
 \textbf{What happens when the transition is late?}
-\begin{figure}[t!]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=0.7\textwidth]{fittedModels-2-5-16-16s.pdf}
 \caption{\textbf{Late transition example:} generated using $4.8\cdot 10^{-17} \cdot x^5 + 9.6\cdot 10^{-7} \cdot x^2$ with 16 support instance sizes.}
 \label{fig:AA-competing-2-5-16-16s}
-\end{figure}
+\end{figure*}
 The worst case scenario for ESA occurs when the transition between two competing terms happens after most or all of the support instance sizes, where ESA has little to no hope of correctly identifying the true asymptotic scaling. for an example of the worst-case behaviour, see Figure~\ref{fig:AA-competing-2-5-16-16s}, where the square-root exponential model appears to fit the data very well. On the positive side, at least ESA also identifies that the two term polynomial model fits the data very well. In practice, the safest course of action in this case is to collect more running time data -- in particular, larger challenge instance sizes -- and run ESA again. On the other hand, if this is not possible, a pragmatic user would be inclined to choose the square-root exponential model as the one that is the best fit, while keeping in mind that it may be an over-estimate for the true running time scaling. In fact, we can already begin to see that this is the case by examining the smallest support instance sizes, for which we can see that the curvature of the square-root exponential model is beginning to pull the model away from the observed running times -- a sign which may generalize to other scenarios where the best-fit model may not be accurately capturing the scaling due to lower-order terms. 
 
 We also observed that the size of the predicted bootstrap intervals continues to increase for the four parameter model. This is even more clear for the case with only 12 support instance sizes (data not shown), where the size of the predicted bootstrap intervals is huge (roughly spanning five orders of magnitude). 
@@ -536,26 +550,22 @@ During the development of ESA, we have used our system in several projects to an
 A first use of ESA extended our earlier scaling analysis of six prominent SAT solvers on random phase-transition 3-SAT instances \cite{MuHoo15} to two classes of random 4-SAT instances. This work, described in detail in Section~5.4 of \cite{Mu15}, yielded several interesting results: for phase-transition instances, exponential (for BalancedZ) or root-exponential models (for the other solvers) usually characterize best the running times of SLS-based, incomplete SAT solvers, while DPLL-based, complete solvers demonstrate scaling behaviour well characterized by exponential models; for solving a class of less-constrained instances believed to be intrinsically challenging, we showed that WalkSAT/SKC and kcnfs, two widely studied SAT solvers, scale significantly better than on phase-transition random instances, in that a polynomial model best describes the observed performance scaling.
 
 In another application of ESA, we improved previous scaling results for the state-of-the-art inexact TSP solvers, EAX and LKH~\cite{DubEtAl15}, with additional data; details on these results are found in Section 6.3 in~\cite{Mu15}. ESA determined that EAX scales root-exponentially, best described by a model of the form $a\cdot b^{\sqrt{n}}$ with $b\approx 1.123$, as shown in Figure \ref{fig:ESA-fitted-models}. For LKH, we also observed evidence for root-exponential scaling, but we cannot rule out a polynomial model (see Figure \ref{fig:Fitted-models-LKH}). We also used ESA to analyze the time required by the state-of-the-art complete TSP solver, Concorde, to find optimal solutions without proving optimality. A root-exponential model of the form $a\cdot b^{\sqrt{n}}$, with $b \approx 1.25$ as illustrated in Figure~\ref{fig:Fitted-models-concorde}, was found to best describe the scaling behaviour. Besides, ESA produced substantial evidence that both EAX and LKH scale better than Concorde for finding optimal solutions to RUE instances.
-\begin{figure}[t]
+\begin{figure*}[t]
 \noindent \begin{centering}
 \includegraphics[width=0.7\textwidth]{LKH_fittedModels}  \vspace{-5mm} 
 % \includegraphics[width=0.7\textwidth]{fittedModels}
 
 \par\end{centering}
 
-\caption{\label{fig:Fitted-models-LKH} Scaling models for median 
-running times of LKH for finding optimal solutions to RUE instances.
-}
-\end{figure}
-\begin{figure}[t]
+\caption{Scaling models for median running times of LKH for finding optimal solutions to RUE instances.}\label{fig:Fitted-models-LKH} 
+\end{figure*}
+\begin{figure*}[t]
 \noindent \begin{centering}
 \includegraphics[width=0.7\textwidth]{concorde_fittedModels}  \vspace{-5mm}
 \par\end{centering}
 
-\caption{\label{fig:Fitted-models-concorde} Scaling models for the medians
-of the running times for Concorde to find optimal solutions of RUE
-instances. }
-\end{figure}
+\caption{Scaling models for the medians of the running times for Concorde to find optimal solutions of RUE instances. }\label{fig:Fitted-models-concorde} 
+\end{figure*}
 
 
 Finally, using ESA, we investigated the impact of parameter settings and automated algorithm configuration on the performance scaling of inexact TSP algorithms~\cite{MuEtAl16}. For EAX, algorithm configuration helps improve the scaling, which can be further improved by adapting the population size with instance size. In particular, we achieved an $\approx1.13$-fold improvement in the median running time for EAX to solve RUE instances of size $n=4\,500$ and expect the improvement to be even more significant for larger instances. For LKH, we observed significant impact of parameter settings on performance scaling, but the state-of-the-art algorithm configurator SMAC tends to overfit the running times for smaller instances and thus produces configurations for which LKH scales worse.
@@ -585,15 +595,13 @@ An alternative consists of incorporating empirical scaling analysis, as performe
 which can take a long time to produce. Thus, it will be important to design a way to reduce the time, possibly by leveraging previously fitted models, \eg{}, by integrating Bayesian methods into empirical scaling analysis, with a previous model acting as the prior for model fitting. This could lead to an enhanced version of ESA that could then be integrated into a future configuration procedure.
 
 
+\begin{acks}
+YP was supported by an NSERC Vanier Scholarship. HH acknowledges funding through an NSERC Discovery Grant, CFI JLEF funding and startup funding from Universiteit Leiden. \todo{Did Zongxu have funding that needs to be added here?}
+\end{acks}
+
 \bigskip
-
-
-
-\section*{Acknowledgements}
-YP was supported by an NSERC Vanier Scholarship. HH acknowledges funding through an NSERC Discovery Grant, CFI JLEF funding and startup funding from Universiteit Leiden. 
-% \todo{Did Zongxu have funding that needs to be added here? HH: No.}
-
 % TODO: will be deleted and changed to Acknowledgements in the final version
+
 
 \noindent
 \footnotesize
@@ -601,8 +609,50 @@ YP was supported by an NSERC Vanier Scholarship. HH acknowledges funding through
 Two of the three case-studies mentioned
 are unpublished and only appear in the M.Sc. thesis of Mu. \note{Do we actually even need this at all? I think there are enough contributions to this paper that the ``successful applications of ESA'' could almost be moved into a section call ``related work'', that combines it with some of the material from the introduction.}
 
-\bibliographystyle{splncs03}
-\bibliography{scaling}
 
+
+
+%\begin{figure}[t]
+%\includegraphics{}
+%\caption{Figure caption.}\label{f1}
+%\end{figure}
+
+%\begin{table*}
+%\caption{} \label{t1}
+%\begin{tabular}{lll}
+%\hline
+%&&\\
+%&&\\
+%\hline
+%\end{tabular}
+%\end{table*}
+
+%%%%%%%%%%% The bibliography starts:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                  The Bibliography                       %%
+%%                                                         %%
+%%  ios1.bst will be used to                               %%
+%%  create a .BBL file for submission.                     %%
+%%                                                         %%
+%%                                                         %%
+%%  Note that the displayed Bibliography will not          %%
+%%  necessarily be rendered by Latex exactly as specified  %%
+%%  in the online Instructions for Authors.                %%
+%%                                                         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\nocite{*} 
+% if your bibliography is in bibtex format, use those commands:
+\bibliographystyle{ios1}           % Style BST file.
+\bibliography{scaling}        % Bibliography file (usually '*.bib')
+
+% or include bibliography directly:
+%\begin{thebibliography}{0}
+%\bibitem{r1} F. Author, Information about cited object.
+%
+%\bibitem{r2} S. Author and T. Author, Information about cited object.
+%\end{thebibliography}
 
 \end{document}
