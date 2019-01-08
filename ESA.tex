@@ -111,19 +111,18 @@ and may also provide useful insights into their behaviour \cite{Kun02,SubDes05,A
 
 %Description of the methodology proposed in \cite{hoos2009bootstrap}.
 
-Very few methods exist for performing empirical running time scaling analysis that handle noise and stochastic behaviour of algorithms in a principled, statistical way~\cite{Hoo09}. 
+Very few methods exist for performing empirical running time scaling analysis that handle noise and the stochastic behaviour of algorithms in a principled, statistical way~\cite{Hoo09}. 
 Common practice among empirically oriented algorithm researchers is to perform relatively small numbers of algorithm runs while varying problem instance size, with some of the more advanced methods taking means over independent runs of the algorithm on the same input instances to reduce the variance in observations~\cite{Sun09}. 
 In some cases, the mean over tens or hundreds of runs on problems of the same size are plotted for varying instance sizes, and these points are compared against each other for two competing algorithms to show that one out-performs the other. 
-In slightly more advanced work, standard least squares regression and curve-fitting procedures are used to fit and subsequently visualise  trend lines~\cite{ZapHau12}. 
+In slightly more advanced work, standard least squares regression and curve-fitting procedures are used to fit and subsequently visualize  trend lines~\cite{ZapHau12}. 
 An improvement to this practice was introduced by McGeoch \etal~\cite{McgEtAl02}, who described and evaluated several prototype methods for fitting and bounding empirical running time data with polynomial models. 
 
 Somewhat related to our work are methods designed to perform algorithm profiling that can automatically extract notions of problem instance size and algorithm running time; however, even these rely on the simple methods we have described above~\cite{ZapHau12,CopEtAl12,CopEtAl14}. 
 Ultimately, the goal of performing empirical running time scaling analysis is to obtain estimates or bounds on how well we can expect an algorithm to perform for larger problem instance sizes than those used to perform the analysis.
 However, neither the work by McGeoch \etal~\cite{McgEtAl02} nor simple curve-fitting procedures address the  question how much faith we should have in the accuracy of the performance extrapolations obtained from empirical models of performance scaling.
 
-A significant advance in empirical running time scaling analysis was achieved by Hoos~\cite{Hoo09}, who introduced a new methodology to address both shortcomings by using
-%HH: (TODO) You should slightly reword above to make it very clear to the reader what the two shortcomings are.
-a complex bootstrap sampling procedure to handle variability in running time in a statistically meaningful way, and by assessing extrapolation accuracy using a set of ``challenge'' instances withheld during the model fitting.  
+A significant advance in empirical running time scaling analysis was achieved by Hoos~\cite{Hoo09}, who introduced a new methodology to address both previously ignored or poorly handled challenges: running time variances and extrapolation accuracy.
+They do this by using a complex bootstrap sampling procedure to handle variability in running time in a statistically meaningful way, and by assessing extrapolation accuracy using a set of ``challenge'' instances withheld during the model fitting.  
 In our work presented here, we extend this methodology and introduce it in the form of a fully automated tool: the Empirical Scaling Analyzer (ESA). 
 ESA takes an input file providing running time data for an algorithm (referred to as target algorithm hereafter), as well as other optional files to configure ESA. 
 ESA is not limited to fitting and assessing a single scaling model, but can deal with multiple models simultaneously -- in other words, once data collection is finished, a user can collate all running time data into a file, feed it into ESA and obtain results from the scaling analysis using several parametric models. 
