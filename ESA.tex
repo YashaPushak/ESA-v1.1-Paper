@@ -93,7 +93,6 @@ We also give an overview of empirical scaling results obtained using ESA.
 
 
 \section{Introduction}
-
 %Introduction of scaling of runtimes for algorithms and the empirical analysis.
 In theoretical computer science, time complexity is one of the most
 prominent concepts arising in the analysis of problems and algorithms.
@@ -115,22 +114,39 @@ and may also provide useful insights into their behaviour \cite{Kun02,SubDes05,A
 Very few methods exist for performing empirical running time scaling analysis that handle noise and stochastic behaviour of algorithms in a principled, statistical way~\cite{Hoo09}. 
 Common practice among empirically oriented algorithm researchers is to perform relatively small numbers of algorithm runs while varying problem instance size, with some of the more advanced methods taking means over independent runs of the algorithm on the same input instances to reduce the variance in observations~\cite{Sun09}. 
 In some cases, the mean over tens or hundreds of runs on problems of the same size are plotted for varying instance sizes, and these points are compared against each other for two competing algorithms to show that one out-performs the other. 
-In slightly more advanced work, standard least squares regression and curve-fitting procedures are used to fit and subsequently visualize  trend lines~\cite{ZapHau12}. 
+In slightly more advanced work, standard least squares regression and curve-fitting procedures are used to fit and subsequently visualise  trend lines~\cite{ZapHau12}. 
 An improvement to this practice was introduced by McGeoch \etal~\cite{McgEtAl02}, who described and evaluated several prototype methods for fitting and bounding empirical running time data with polynomial models. 
 
 Somewhat related to our work are methods designed to perform algorithm profiling that can automatically extract notions of problem instance size and algorithm running time; however, even these rely on the simple methods we have described above~\cite{ZapHau12,CopEtAl12,CopEtAl14}. 
 Ultimately, the goal of performing empirical running time scaling analysis is to obtain estimates or bounds on how well we can expect an algorithm to perform for larger problem instance sizes than those used to perform the analysis.
 However, neither the work by McGeoch \etal~\cite{McgEtAl02} nor simple curve-fitting procedures address the  question how much faith we should have in the accuracy of the performance extrapolations obtained from empirical models of performance scaling.
 
+A significant advance in empirical running time scaling analysis was achieved by Hoos~\cite{Hoo09}, who introduced a new methodology to address both shortcomings by using
+%HH: (TODO) You should slightly reword above to make it very clear to the reader what the two shortcomings are.
+a complex bootstrap sampling procedure to handle variability in running time in a statistically meaningful way, and by assessing extrapolation accuracy using a set of ``challenge'' instances withheld during the model fitting.  
+In our work presented here, we extend this methodology and introduce it in the form of a fully automated tool: the Empirical Scaling Analyzer (ESA). 
+ESA takes an input file providing running time data for an algorithm (referred to as target algorithm hereafter), as well as other optional files to configure ESA. 
+ESA is not limited to fitting and assessing a single scaling model, but can deal with multiple models simultaneously -- in other words, once data collection is finished, a user can collate all running time data into a file, feed it into ESA and obtain results from the scaling analysis using several parametric models. 
+The results are presented in a technical report, which contains easy-to-read tables and figures for the scaling of the target algorithm. 
+ESA also automatically interprets the results and assesses whether a model describes the running data well, using an advanced decision model newly developed here.
+
+Many state-of-the-art solvers for challenging computational problems are highly heuristic, so their performance scaling can typically not be characterized with any reasonable precision using theoretical approaches.
+In this situation, empirical scaling analysis, based on advanced statistical techniques, is the method of choice. 
+ESA makes such an approach broadly and conveniently accessible. 
+For example, the methodology underlying ESA has previously been applied to state-of-the-art local search algorithms for Euclidean TSP instances~\cite{DubEtAl15}, and we applied a prototype of ESA to study the empirical scaling of high-performance SAT solvers~\cite{MuHoo15}, which we later extended to two classes of 4-SAT instances~\cite{Mu15}. 
+We have also used earlier versions of ESA to perform empirical analysis of two inexact TSP solvers and to investigate the impact of automated algorithm configuration on their empirical running time scaling~\cite{MuEtAl16,Mu15}. 
+More recently, we have used ESA to extend the analysis of these cutting-edge inexact TSP algorithms to compare their scaling with that of a state-of-the-art exact TSP algorithm~\cite{MuEtAl17}.
+
+We believe that ESA will prove to be useful for other researchers who want to study the empirical time complexity of other algorithms. ESA is available as an easy-to-use on-line service at \url{www.cs.ubc.ca/labs/beta/Projects/ESA} and can also be downloaded and installed locally as a command-line tool with additional functionality.
+
+Our work presented in the following makes two main contributions: 
+we present ESA (see Section~\ref{sec:Implementation and Use}), a fully-automated implementation of an advanced empirical running time scaling analysis methodology~\cite{Hoo09} (see Section~\ref{sec:method} for a summary of the methodology and our improvements to it); and we summarize the results of performing rigorous experiments with ESA on challenging scenarios (see Sections~\ref{sec:Stress Testing} and~\ref{sec:Lower Order Terms}). 
+Improvements to ESA over an earlier, preliminary version include a nested bootstrap sampling procedure for randomized target algorithms and a novel method for automatically assessing the quality of fitted models (described in Section~\ref{sec:auto-interpretation}). 
+To design challenging benchmarking tests for ESA, we also introduce a novel method for artificially generating realistic running time data (see Section~\ref{sec:AA}). 
+We further discuss several successful applications of the methodology underlying ESA in previous work (see Section~\ref{sec:Successful Applications}), demonstrating its power and ability to provide meaningful insights in a diverse set of applications. 
+Finally, we provide some general conclusions and briefly discuss future extensions to ESA (see Section~\ref{sec:Conclusion}).
+
 % *** HH to continue from here
-
-A significant advance in empirical running time scaling analysis was realized by Hoos~\cite{Hoo09}, who introduced a new methodology to address both gaps: they use bootstrap sampling to handle running time variance in a statistically meaningful way, and they assess extrapolation accuracy using a set of ``challenge'' instances withheld during the model fitting.  In this work, we extend this methodology and introduce it in the form of a fully automated tool: the Empirical Scaling Analyzer (ESA). ESA takes an input file providing running time data for an algorithm (referred to as target algorithm hereafter), as well as other optional files to configure ESA. ESA is not limited to fitting and assessing a single scaling model, but can deal with multiple models simultaneously -- in other words, once data collection is finished, a user can put all running time data into a file, feed it into ESA and obtain results from the scaling analysis using several parametric models. The results are presented in a technical report, which contains easy-to-read tables and figures for the scaling of the target algorithm. ESA also automatically interprets the results and assesses whether a model describes the running data well, using a decision model newly developed here.
-
-Many state-of-the-art solvers for challenging computational problems are highly heuristic, so their performance scaling can typically not be characterized with any reasonable precision using theoretical approaches. In this situation, empirical scaling analysis, based on advanced statistical techniques, is the method of choice. ESA makes such an approach broadly and conveniently accessible. For example, the methodology underlying ESA has previously been applied to state-of-the-art local search algorithms for Euclidean TSP instances~\cite{DubEtAl15}, we applied a prototype of ESA to study the empirical scaling of high-performance SAT solvers~\cite{MuHoo15}, which we later extended to two classes of 4-SAT instances~\cite{Mu15}. We have also used earlier versions of ESA to perform empirical analysis of two inexact TSP solvers and to investigate the impact of automated algorithm configuration on their empirical running time scaling~\cite{MuEtAl16,Mu15}. More recently we used ESA to extend the analysis of the two in-exact TSP algorithms to compare them with the scaling of a state-of-the-art, exact TSP algorithm~\cite{MuEtAl17}.
-
-We believe that ESA will prove to be useful for other researchers who want to study the empirical time complexity of other algorithms. The tool is available as an easy-to-use online service at \url{www.cs.ubc.ca/labs/beta/Projects/ESA} and can also be downloaded and installed locally as a command-line tool with additional functionality.
-
-This work contains two main contributions: we present ESA (see Section~\ref{sec:Implementation and Use}): a fully-automated implementation of an advanced empirical running time scaling analysis methodology~\cite{Hoo09} (see Section~\ref{sec:method} for a summary of the methodology and our improvements to it); and we summarize the results of performing rigorous tests with ESA on challenging scenarios (see Sections~\ref{sec:Stress Testing} and~\ref{sec:Lower Order Terms}). Improvements to ESA include a nested bootstrap sampling procedure for randomized target algorithms and a novel method for automatically assessing the quality of fitted models (described in Section~\ref{sec:auto-interpretation}). To design challenging benchmarking tests for ESA, we also introduce a novel method for generating approximately realistic, artificial running times (see Section~\ref{sec:AA}). We further discuss several successful applications of ESA's methodology in previous work (see Section~\ref{sec:Successful Applications}), demonstrating its power and ability to provide meaningful insights in a diverse set of applications. Finally, we provide concluding remarks and possible future extensions to ESA's methodology (see Section~\ref{sec:Conclusion}).
 
 
 \section{Methodology}
