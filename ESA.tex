@@ -270,13 +270,16 @@ These criteria are combined into the fully automated interpretation procedure il
 \section{Running ESA}
 \label{sec:Implementation and Use}
 
-ESA uses Python 2.7 to implement the methodology described in Section~\ref{sec:method} and makes use of gnuplot and \LaTeX { }to automatically generate and compile an easy-to-read pdf technical report containing detailed empirical scaling analysis results presented in tables and figures and their interpretation using our new interpretation procedure. 
+ESA implements the methodology described in Section~\ref{sec:method} in Python 2.7, also making use of gnuplot and \LaTeX{} to automatically generate and compile an easy-to-read technical report (in the form of a PDF file) containing detailed empirical scaling analysis results presented in tables and figures and their interpretation using our new procedure outline in Section~\ref{sec:auto-interpretation}
 
 %\subsection{Input}
 \label{sec:ESA-Input}
 
-To perform scaling analysis, ESA requires input data containing the sizes of the instances studied and the running times of the algorithm on those instances. The user may also specify the number of instances for some sizes; if there are fewer entries for a given instance size, ESA will treat the missing entries as instances with unknown running times. An example for such data is found in a recent study by Dubois \etal~\cite{DubEtAl15}, in the context of analyzing the scaling behaviour of two inexact TSP algorithms, where the running times of some instances were unknown due to unknown optimal tour lengths. 
-An excerpt of an input file for ESA is shown in Figure~\ref{fig:Excerpt-ESA-input}. In this example, multiple running times are provided for each instance, each of which corresponds to an independent run of the target algorithm on the specified instance. The user is required to include at least one column with running times; however, any number of additional columns may be appended to the file to add additional independent runs per instance. 
+To perform scaling analysis, ESA requires input data containing the sizes of the instances studied and the running times of the target algorithm on those instances. 
+The user may also specify the number of instances for some sizes; if there are fewer entries for a given instance size than specified explicitly, ESA will treat the missing entries as instances with unknown running times. 
+An example for such data is found in a recent study by Dubois \etal~\cite{DubEtAl15}, in the context of analyzing the scaling behaviour of two inexact TSP algorithms, where the running times of some instances were unknown due to unknown optimal tour lengths. 
+An excerpt of an input file for ESA is shown in Figure~\ref{fig:Excerpt-ESA-input}. 
+In this example, multiple running times are provided for each instance, each of which corresponds to an independent run of the target algorithm on the specified instance. The user is required to include at least one column with running times; however, any number of additional columns may be appended to the file to add additional independent runs per instance. 
 
 \begin{figure}[t]
 \begin{lstlisting}[basicstyle={\scriptsize\ttfamily}]
@@ -297,17 +300,26 @@ portgen-4500-11.tsp, 4500, inf, inf, inf
 \caption{Example input file for ESA, where ``...'' represents omitted lines analogous to those shown.}\label{fig:Excerpt-ESA-input}
 \end{figure}
 
-ESA also takes as input a configuration file, containing details on the target algorithm (algName), the instance distribution (instName), the number of support instance sizes (numTrainingData), \emph{etc.}  Each line of this file specifies one parameter setting in the format of  ``\lstinline[basicstyle={\ttfamily}]!name : value!''.
+ESA also takes as input a configuration file, containing details on the target algorithm (algName), the instance distribution (instName), the number of support instance sizes (numTrainingData), \emph{etc.}  
+Each line of this file specifies one parameter setting in the format of  ``\lstinline[basicstyle={\ttfamily}]!name : value!''.
 
-There are a number of other files that a user may supply (if not supplied, ESA will use the default file(s) distributed with the code), including: a file specifying the models to be fitted, a {\LaTeX} template specifying the content and format of the output report, and gnuplot templates specifying the format of the plots appearing in the report. The first of these is needed, because ESA supports customized models, as long as the models are supported by python (including the math and the numpy packages) and gnuplot. Each line of this file specifies one parametric scaling model,  including the model name (\eg{}, Exponential), the number of parameters (\eg{}, 2), {\LaTeX}, python and gnuplot expressions of the model, as well as default values for the fitting parameters. In the mathematical expressions of the models, $x$ represents the instance size, while model parameters are written as $@@a@@, @@b@@,$ \emph{etc.}
+There are a number of other files that a user may supply, including: a file specifying the models to be fitted, a {\LaTeX} template specifying the content and format of the output report, and gnuplot templates specifying the format of the plots appearing in the report. 
+% (If any of these input files are not supplied, ESA will use default the default file(s) distributed with the code))
+% HH: <- IMO, not needed here (this is more (suitable for a readme or user manual)
+The first of these is needed, because ESA supports customized models, as long as the models are supported by python (including the math and numpy packages) and gnuplot. 
+Each line of this file specifies one parametric scaling model,  including the model name (\eg{}, Exponential), the number of parameters (\eg{}, 2), {\LaTeX}, python and gnuplot expressions for the model, as well as default values for the fitting parameters. 
+In the mathematical expressions for the models, $x$ represents the instance size, while model parameters are written as $@@a@@, @@b@@,$ \emph{etc.}
 
 
-ESA comes with a default {\LaTeX} template for the report containing the results of the scaling analysis. This template can be customized easily by anyone with working knowledge of \LaTeX. Dynamic elements are enclosed in ``@@'' in the template; \eg{}, the target algorithm name specified in the configuration file is referenced as ``@@algName@@''. Users of ESA can also modify the formatting of the plots used for graphically presenting scaling analysis results, by editing the default template gnuplot script, \eg{}, to select log-log or semi-log plots.
+ESA comes with a default {\LaTeX} template for the report containing the results of the scaling analysis. This template can be customized easily by anyone with working knowledge of \LaTeX. 
+Dynamic elements are enclosed in ``@@'' in the template; \eg{}, the target algorithm name specified in the configuration file is referenced as ``@@algName@@''. 
+Users of ESA can also modify the formatting of the plots used for graphically presenting scaling analysis results, by editing the default template gnuplot script, \eg{}, to obtain log-log or semi-log plots.
 
 %\subsection{Output}
 \label{sec:ESA-Output}
 
- Here, we illustrate some examples of ESA output from our analysis on EAX~\cite{NagKob13}. EAX is a state-of-the-art inexact TSP solver based on an evolutionary algorithm that improved the edge assembly crossover operator~\cite{Nag97}. The tables and figures include:
+ Here, we illustrate some examples of ESA output from our analysis on EAX~\cite{NagKob13}, a state-of-the-art inexact TSP solver based on an evolutionary algorithm with a special edge assembly crossover operator~\cite{Nag97}. The tables and figures include:
+ %HH: Why don't we show example for all tables and figures? (TODO)
 \begin{itemize}
 \item two tables showing statistics of running times for support and challenge
 data, respectively;
