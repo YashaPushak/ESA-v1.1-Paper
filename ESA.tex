@@ -319,33 +319,55 @@ Users of ESA can also modify the formatting of the plots used for graphically pr
 \label{sec:ESA-Output}
 
  Here, we illustrate some examples of ESA output from our analysis on EAX~\cite{NagKob13}, a state-of-the-art inexact TSP solver based on an evolutionary algorithm with a special edge assembly crossover operator~\cite{Nag97}. The tables and figures include:
- %HH: Why don't we show example for all tables and figures? I also wonder whether we should not explain, in 1-2 sentences, the purpose of each of those tables + figures - i.e., what can be seen from them (TODO)
+ %HH: Why don't we show example for all tables and figures? I also wonder whether we should not explain, in 1-2 sentences, the purpose of each of those tables + figures - i.e., what can be seen from them (DONE)
 \begin{itemize}
-\item two tables showing statistics of running times for support and challenge
-data, respectively;
-\item a table presenting fitted models and corresponding root mean squared error (RMSE) values, as illustrated
-in Table~\ref{tab:ESA-fitted-models};
+\item Two tables showing statistics of running times for support and challenge data, respectively, to summarize the data set. An example of the support data summary is illustrated in Table~\ref{tab:ESA-support}.
 \begin{table}[t]
-\caption{Fitted models example} \label{tab:ESA-fitted-models}
+\caption{Support data example} \label{tab:ESA-support}
 \begin{centering}
 \scalebox{0.75}{%
-\begin{tabular}{ccccc}
-\hline 
- &  & \multirow{2}{*}{Model} & RMSE  & RMSE\tabularnewline
- &  &  & (support)  & (challenge)\tabularnewline
-\hline 
-\hline 
-\multirow{3}{*}{EAX} & Exp. & $1.6512\times1.0017^{n}$  & $0.80329$  & $\left[1513.3,1566.2\right]$ \tabularnewline
- & RootExp. & $\mathbf{0.24795\times1.123^{\sqrt{n}}}$  & $\mathbf{0.45614}$  & $\mathbf{\left[44.77,88.739\right]}$ \tabularnewline
- & Poly. & $1.9196\times10^{-5}\times n^{1.9055}$  & $0.10699$  & $\left[235.79,287.6\right]$ \tabularnewline
-\hline 
+\begin{tabular}{c|cccc}
+\hline
+$n$ & 500 & 600 & $\cdots$ & 1500 \tabularnewline
+\hline
+\# instances & 1000 & 1000 & & 1000 \tabularnewline
+\# running times & 1000 & 1000 &  & 1000 \tabularnewline
+mean & $2.67$ & $4.154$ &  & $34.06$ \tabularnewline
+coefficient of variation & $0.3943$ & $0.8558$ &  & $1.226$ \tabularnewline
+Q(0.1) & $2.24$ & $3.26$ & $\cdots$ & $19.17$ \tabularnewline
+Q(0.25) & $2.35$ & $3.42$ &  & $20$ \tabularnewline
+median & $2.49$ & $3.61$ &  & $21.57$ \tabularnewline
+Q(0.75) & $2.64$ & $3.84$ &  & $27.29$ \tabularnewline
+Q(0.9) & $2.84$ & $4.18$ &  & $57$ \tabularnewline
+\hline
 \end{tabular}}\medskip{}
 \par
 \end{centering}
 \end{table}
 
-\item a figure showing running times, fitted models and corresponding bootstrap
-confidence intervals for each model, as illustrated in Figure \ref{fig:ESA-fitted-models};
+\item A table presenting fitted models and corresponding root mean squared error (RMSE) values, which can be used to easily see which model best fits the data according to the challenge RMSE (which is highlighted in boldface), as illustrated
+in Table~\ref{tab:ESA-fitted-models}.
+\begin{table}[t]
+\caption{Fitted models example} \label{tab:ESA-fitted-models}
+\begin{centering}
+\scalebox{0.75}{%
+\begin{tabular}{ccccc}
+\hline
+ &  & \multirow{2}{*}{Model} & RMSE  & RMSE\tabularnewline
+ &  &  & (support)  & (challenge)\tabularnewline
+\hline
+\hline
+\multirow{3}{*}{EAX} & Exp. Model & $1.6504\times 1.0017^{x}$ & $7.1101$ & $\left[1421.6,1678.1\right]$ \tabularnewline
+ & RootExp. Model & $\mathbf{0.24807\times 1.1229^{\sqrt{x}}}$ & $\mathbf{2.298}$ & $\mathbf{\left[26.147,182.98\right]}$ \tabularnewline
+ & Poly. Model & $1.9222\times10^{-5}\times x^{1.9053}$ & $0.098977$ & $\left[159.78,385.31\right]$ \tabularnewline
+\hline
+\end{tabular}%
+}\medskip{}
+\par
+\end{centering}
+\end{table}
+
+\item A figure showing running times, fitted models and corresponding bootstrap confidence intervals for each model, which provides a very useful and easy to understand visualization of the analysis performed, as illustrated in Figure \ref{fig:ESA-fitted-models}.
 \begin{figure*}[t]
 \noindent \begin{centering}
 \includegraphics[width=0.7\textwidth]{EAX_fittedModels} \vspace{-5mm}
@@ -355,96 +377,82 @@ confidence intervals for each model, as illustrated in Figure \ref{fig:ESA-fitte
 \caption{Example output of ESA -- running times, fitted models and corresponding bootstrap confidence intervals.}\label{fig:ESA-fitted-models}
 \end{figure*}
 
-\item a figure showing the residues of the fitted models;
-\item a table of bootstrap confidence intervals for all model parameters,
-as illustrated in Table \ref{tab:ESA-bootstrap-paras};
+\item A figure showing the residues of the fitted models, which helps the user easily see trends in the residues of the fitted models, as illustrated in Figure~\ref{fig:ESA-fitted-residues}.
+\begin{figure*}[t]
+\noindent \begin{centering}
+\includegraphics[width=0.7\textwidth]{EAX_fittedResidues} \vspace{-5mm}
+
+\par\end{centering}
+
+\caption{Example output of ESA -- residues of the fitted models}\label{fig:ESA-fitted-residues}
+\end{figure*}
+
+
+\item A table of bootstrap confidence intervals for all model parameters, which allows a user to assess the uncertainty in the fitted models and perhaps accept or reject hypotheses about whether or not empirical observations match theoretical expectations about an algorithm's scaling. An example is shown in Table~\ref{tab:ESA-bootstrap-paras}.
 \begin{table}[t]
 \begin{centering}
 \caption{\label{tab:ESA-bootstrap-paras}Model confidence intervals example}
 \scalebox{0.75}{%
 \begin{tabular}{cc|cc}
-\hline 
+\hline
 Solver  & Model  & Confidence interval of $a$  & Confidence interval of $b$ \tabularnewline
-\hline 
-\multirow{3}{*}{EAX} & Exp.  & $\left[1.6234,1.6764\right]$  & $\left[1.0017,1.0018\right]$ \tabularnewline
- & RootExp.  & $\left[0.23938,0.25592\right]$  & $\left[1.1219,1.1242\right]$ \tabularnewline
- & Poly.  & $\left[1.6803\times10^{-5},2.1556\times10^{-5}\right]$  & $\left[1.8887,1.9245\right]$ \tabularnewline
-\hline 
-\end{tabular}}\medskip{}
+\hline
+\multirow{3}{*}{EAX} & Exp. & $\left[1.6182,1.6777\right]$ & $\left[1.0017,1.0018\right]$ \tabularnewline
+ & RootExp. & $\left[0.23777,0.2565\right]$ & $\left[1.1218,1.1244\right]$ \tabularnewline
+ & Poly. & $\left[1.6402\times10^{-5},2.1752\times10^{-5}\right]$ & $\left[1.8875,1.9281\right]$ \tabularnewline
+\hline
+\end{tabular}%
+}\medskip{}
 
 \par\end{centering}
 
 %\caption{\label{tab:ESA-bootstrap-paras}Example output of ESA -- bootstrap confidence intervals for all model parameters.}
 \end{table}
 
-\item a table of medians and bootstrap confidence intervals for the support and challenge RMSE of each model, as illustrated in Table~\ref{tab:ESA-bootstrap-RMSE};
+\item A table of medians and bootstrap confidence intervals for the support and challenge RMSE of each model, which provides more information about how well the models fit the data than Table~\ref{tab:ESA-fitted-models} by leveraging the bootstrap analysis, as illustrated in Table~\ref{tab:ESA-bootstrap-RMSE}.
 
 \begin{table}[t]
 \begin{centering}
-\caption{Model RMSE example}
+\caption{Model RMSE example}\label{tab:ESA-bootstrap-RMSE}
 \scalebox{0.75}{%
-\begin{tabular}{cc|cc|cc} 
-\hline 
- \multirow{2}{*}{Solver} & \multirow{2}{*}{Model} & \multicolumn{2}{c|}{Support RMSE}  & \multicolumn{2}{c}{Challenge RMSE} \tabularnewline & & Median & Confidence Interval & Median & Confidence Interval \tabularnewline\hline 
-\hline 
-\multirow{3}{*}{EAX} & Exp. & $1.0888$ & $\left[1.0316,1.143\right]$ & $1548$ & $\left[1406.7,1693.6\right]$ \tabularnewline 
-& RootExp. & $\mathbf{0.61987}$ & $\mathbf{\left[0.56355,0.67517\right]}$ & $\mathbf{81.248}$ & $\mathbf{\left[21.671,159.93\right]}$ \tabularnewline 
- & Poly. & $0.15986$ & $\left[0.11977,0.20373\right]$ & $274.78$ & $\left[203.18,356.73\right]$ \tabularnewline 
-\hline 
-\end{tabular}}\medskip{}
+\begin{tabular}{cc|cc|cc}
+\hline
+ \multirow{2}{*}{Solver} & \multirow{2}{*}{Model} & \multicolumn{2}{c|}{Support RMSE}  & \multicolumn{2}{c}{Challenge RMSE} \tabularnewline & & Median & Confidence Interval & Median & Confidence Interval \tabularnewline\hline
+\hline
+\multirow{3}{*}{EAX} & Exp. & $1.0862$ & $\left[1.0286,1.1404\right]$ & $1577.3$ & $\left[1209.6,1801.1\right]$ \tabularnewline
+ & RootExp. & $\mathbf{0.61754}$ & $\mathbf{\left[0.56284,0.67104\right]}$ & $\mathbf{71.045}$ & $\mathbf{\left[12.057,394.81\right]}$ \tabularnewline
+ & Poly. & $0.15889$ & $\left[0.11768,0.2076\right]$ & $251.38$ & $\left[121.37,592.91\right]$ \tabularnewline
+\hline
+\end{tabular}%
+}\medskip{}
 
 \par\end{centering}
 
 %\caption{Example output of ESA -- medians and bootstrap confidence intervals for support and challenge RMSE.}
-\label{tab:ESA-bootstrap-RMSE}
+
 \end{table}
 
-\item two tables, for each model, of bootstrap confidence intervals for
+\item Two tables, for each model, of bootstrap confidence intervals for
 observed and predicted running times, one for support data and the
-other for challenge data, as illustrated in Tables~\ref{tab:ESA-bootstrap-support} and~\ref{tab:ESA-bootstrap-challenge}.
-\begin{table*}[t]
-\begin{centering}
-
-\par\end{centering}
-
-\begin{centering}
-\caption{Observed and predicted support confidence intervals example}
-\label{tab:ESA-bootstrap-support}
-\scalebox{0.75}{%
-\begin{tabular}{ccccc}
-\hline 
-\multirow{2}{*}{Solver}  & \multirow{2}{*}{$n$}  & Predicted confidence intervals  & \multicolumn{2}{c}{Observed median run-time}\tabularnewline
- &  & RootExp. model  & Point estimates  & Confidence intervals\tabularnewline
-\hline 
-\hline 
-\multirow{5}{*}{EAX} & 500  & $\left[3.279,3.349\right]$  & $2.49$  & $\left[2.47,2.51\right]$ \tabularnewline
- & 600  & $\left[4.21,4.282\right]$  & $3.61$  & $\left[3.59,3.63\right]$ \tabularnewline
- & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$\tabularnewline
- & 1400  & $\mathbf{\left[18.89,19.14\right]}$\textbf{\#}  & $18.89$  & $\left[18.73,19.09\right]$ \tabularnewline
- & 1500  & $\left[21.97,22.32\right]$  & $21.57$  & $\left[21.29,21.91\right]$ \tabularnewline
-\hline 
-\end{tabular}}\medskip{}
-\par\end{centering}
-\end{table*}
-
+other for challenge data. These tables allow the user to easily identify which model predictions are weakly or strongly consistent with the observations through boldface and asterisks. An example for challenge data is illustrated in Table~\ref{tab:ESA-bootstrap-challenge}.
 \begin{table*}[t]
 \begin{centering}
 \caption{Observed and predicted challenge confidence intervals example}
 \label{tab:ESA-bootstrap-challenge}
 \scalebox{0.75}{%
 \begin{tabular}{ccccc}
-\hline 
-\multirow{2}{*}{Solver}  & \multirow{2}{*}{$n$}  & Predicted confidence intervals  & \multicolumn{2}{c}{Observed median run-time}\tabularnewline
+\hline
+\multirow{2}{*}{Solver} & \multirow{2}{*}{$n$} & Predicted confidence intervals & \multicolumn{2}{c}{Observed median run-time}\tabularnewline
  &  & RootExp. model  & Point estimates  & Confidence intervals\tabularnewline
-\hline 
-\hline 
-\multirow{5}{*}{EAX} & 2000  & $\left[43.77,45.01\right]$  & $41.24$  & $\left[40.03,42.26\right]$ \tabularnewline
- & 2500  & $\mathbf{\left[80.33,83.51\right]}$  & $73.19$  & $\left[61.11,118\right]$ \tabularnewline
- & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$\tabularnewline
- & 4000  & $\mathbf{\left[368.4,393.6\right]}$  & $\left[483.2,547.4\right]$  & $\left[370.2,649.8\right]$ \tabularnewline
- & 4500  & $\mathbf{\left[572.8,616.7\right]}$\textbf{+}  & $\left[611.7,727.7\right]$  & $\left[520,877.6\right]$ \tabularnewline
-\hline 
-\end{tabular}}\medskip{}
+\hline
+\hline
+\multirow{4}{*}{EAX} & 2000 & $\left[43.72,45.07\right]$ & $41.26$ & $\left[40.05,42.41\right]$ \tabularnewline
+ & 2500 & $\mathbf{\left[80.21,83.7\right]}$ & $86.62$ & $\left[62.31,119.2\right]$ \tabularnewline
+ & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$ \tabularnewline
+ & 4500 & $\mathbf{\left[571.2,620.6\right]}$ & $\left[368.4,982.4\right]$ & $\left[257.9,1528\right]$ \tabularnewline
+\hline
+\end{tabular}%
+}\medskip{}
 
 \par\end{centering}
 
