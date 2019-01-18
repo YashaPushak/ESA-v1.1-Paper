@@ -504,6 +504,8 @@ Clearly, the latter case is more benign than the first, but it is not always cle
 To better understand the robustness and limitations of ESA, we conducted a series of carefully designed \emph{stress-testing experiments}.
 Specifically, by varying properties of artificially generated benchmark sets of running time (see Section~\ref{sec:AA}), we studied the performance of ESA for a range of challenging situations.
 
+%HH: You need to explain somewhere (perhaps here), which kind of stress tests you describe in this section, and which in the next. At the very least, because you mention lower-order terms above, you should make it clear that you are investigating the degree to which they cause issues in Section 6. (TODO)
+
 We generated two data sets, using a polynomial and an exponential scaling model. For the polynomial model, we used $2.58\cdot 10^{-10} \cdot n^{3.37}$, which tended to fit some real running time data obtained from a TSP solver in preliminary experiments. 
 We fitted the exponential model to data from the polynomial model, to make the two models as similar as possible. 
 We generated running times for 21 instance sizes: 500, 600, ..., 1900, 2000, 2500, ..., 4500, and we used 16 support instance sizes, 5 challenge instance sizes, 500 instances per size and 10 independent runs per instance. 
