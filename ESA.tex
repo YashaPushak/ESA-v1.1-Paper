@@ -492,16 +492,31 @@ Second, we draw a sample from an exponential distribution with median $1$.
 In this case, assume we draw a value of $0.83291$ (CPU seconds); this means that $0.83291$ is the median running time for that particular instance. 
 Finally, if we want to simulate 3 independent runs of the algorithm on this instance, we would draw 3 samples from an exponential distribution with median $0.83291$.
 
+
 \section{Stress testing}
 \label{sec:Stress Testing}
 
-There are many potential factors that could cause ESA to report misleading or incorrect results: for example, it could mistakenly accept the wrong scaling model because of misleading lower-order terms, or because the predicted confidence intervals are so large that any model fits the data. Clearly, the latter case is more benign than the first, but it is not clear how to resolve the problem. Most likely, more data of some kind is needed -- perhaps running times for more instance sizes, larger challenge instance sizes, more instances per size, or more independent runs per instance. 
-By varying properties of artificially generated running time data sets (see Section~\ref{sec:AA}) we studied the performance of ESA as the scenarios become more challenging. 
+There are many potential factors that could cause ESA to report misleading or incorrect results: for example, it could erroneously accept an incorrect scaling model because of misleading lower-order terms, or because the predicted confidence intervals are so large that any model fits the data. 
+Clearly, the latter case is more benign than the first, but it is not always clear how to resolve the problem. 
+%In many cases, more data is needed -- perhaps running times for more instance sizes, larger challenge instance sizes, more instances per size, or more independent runs per instance. 
+%HH: <- this sentence is good, but doesn't fit into the flow here. (TODO - integrate elsewhere, e.g., end of section of conclusions)
+%HH: new text:
+To better understand the robustness and limitations of ESA, we conducted a series of carefully designed \emph{stress-testing experiments}.
+Specifically, by varying properties of artificially generated benchmark sets of running time (see Section~\ref{sec:AA}), we studied the performance of ESA for a range of challenging situations.
 
-We generated two data sets using a polynomial and an exponential scaling model. For the polynomial model we used $2.58\cdot 10^{-10} \cdot n^{3.37}$, which tended to fit some preliminary TSP data. We fit the exponential model to data from the polynomial model to make them as similar as possible. We generated running times for 21 instance sizes: 500, 600, ..., 1900, 2000, 2500, ..., 4500. We used 16 support instance sizes, 5 challenge instance sizes, 500 instances per size and 10 independent runs per instance. We set ESA's parameters to their default values, using 1\,000 bootstrap samples, an alpha value of 95 and studied the median running time of the per-instance medians. 
-Since the instance sets should be viewed as a sample drawn from a random distribution, we created a very large data set with 10\,000 instances per size and 100 independent runs per instance. This allowed us to perform 1\,000 independent runs of ESA on various sub samples of the original data set with the desired properties.
+We generated two data sets, using a polynomial and an exponential scaling model. For the polynomial model, we used $2.58\cdot 10^{-10} \cdot n^{3.37}$, which tended to fit some real running time data obtained from a TSP solver in preliminary experiments. 
+We fitted the exponential model to data from the polynomial model, to make the two models as similar as possible. 
+We generated running times for 21 instance sizes: 500, 600, ..., 1900, 2000, 2500, ..., 4500, and we used 16 support instance sizes, 5 challenge instance sizes, 500 instances per size and 10 independent runs per instance. 
+We set ESA's parameters to their default values, using 1\,000 bootstrap samples and an alpha value of 95, and we studied the median running time of the per-instance medians. 
+%HH: I am confused - does the following speak of the same instance set? I think not ... yet, no clear distinction is drawn ...
+Since the instance sets are sampled from a probability distribution, we created a very large data set with 10\,000 instances per size and 100 independent runs per instance. 
+This allowed us to perform 1\,000 independent runs of ESA on various sub samples of the original data set with the desired properties.
 
-In the following, we provide only a high-level summary of our findings, and distill from these results our advice on best-practices for using ESA. For a substantially more detailed discussion and presentation of the results, please see our online, supplementary material available at \url{http://www.cs.ubc.ca/labs/beta/Projects/ESA}~\todo{Not yet online (though ESA v1.1 is). Currently available at https://www.overleaf.com/6216557917nztjdzchjhxp}
+In the following, we provide only a high-level summary of our findings, and distill from these results generic advice on best-practices for using ESA. 
+For a substantially more detailed discussion and presentation of the results, please see our online, supplementary material available at \url{http://www.cs.ubc.ca/labs/beta/Projects/ESA}~\todo{Not yet online (though ESA v1.1 is). Currently available at https://www.overleaf.com/6216557917nztjdzchjhxp}
+%HH: <- TODO: put on-line before submission
+
+%HH: All of the following should be a bit more concrete, without being significantly longer. Rather than giving vague statements, such as "say 10", refer to concrete examples of what you have seen. If we don't do this, giving details on the experimental setup (above) is useless, and we run a risk that reviewers simply aren't convinced. (TODO)
 
 \textbf{What happens when we decrease the number of support instances per instance size?}
 ESA can identify that the correct model fits the data even with a very small number of instances per size; however, this is because the size of the bootstrap confidence intervals for the fitted model predictions grows much more quickly than the size of the confidence intervals for the observed challenge statistics, \ie{}, all of the fitted models fit the data very well for small instance sets. In particular, we found that for extremely small numbers of support instances per size (say 10), the predicted confidence intervals were up to 3 or 4 orders of magnitude larger than the observed intervals (for the polynomial model on the polynomial data set), and up to 4 or 5 orders of magnitude larger than when 1\,000 instances were used per instance size.
