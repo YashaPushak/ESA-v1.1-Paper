@@ -584,12 +584,15 @@ We believe that we would have observed more significant effects on ESA's perform
 On the other hand, we observed no significant benefit to increasing the number of bootstrap samples beyond 1\,000.
 
 
-\section{Lower order terms}
+\section{Lower-order terms}
 \label{sec:Lower Order Terms}
 
-One possible source of difficulty for ESA occurs when the underlying running time scaling contains lower order terms which initially compete with the true, asymptotic scaling. For example, an algorithm may scale asymptotically as an exponential; however, for small instance sizes the scaling may appear to be polynomial because the running times are being dominated by polynomial start-up costs incurred by initializing data structures. 
+One possible source of difficulty for ESA occurs when a given target algorithm shows scaling of running time characterised by a function that includes lower-order terms in addition to the asymptotically dominant term.
+For example, an algorithm may show exponential asymptotic scaling of running time with instance size; however, for small instance sizes, the scaling may appear to be polynomial, because the running times are dominated by polynomial costs incurred by initializing data structures. 
 
-To investigate these effects we used running time data sets generated with two polynomial terms with degrees 2 and 5. For the degree 2 polynomial term we used the coefficient $9.6\cdot 10^{-7}$. To create three different data sets, we used three values for the degree 5 polynomial coefficient: $4.8\cdot 10^{-15}$, $4.8\cdot 10^{-16}$ and $4.8 \cdot 10^{-17}$. These values were chosen so that the transition occurs near the low, middle and high end of the instance sizes, respectively. The data sets contained 11 independent runs per instance with 1\,000 instances for each of the 21 instance sizes 500, 600, ..., 1\,900, 2\,000, 2\,500, ..., 4\,500. 
+To investigate these effects, we used running time data sets generated with two polynomial terms with degrees 2 and 5. For the degree-2 polynomial term, we used the coefficient $9.6\cdot 10^{-7}$, and for the degree-5 polynomial term, we considered three coefficients: $4.8\cdot 10^{-15}$, $4.8\cdot 10^{-16}$ and $4.8 \cdot 10^{-17}$. 
+These values were chosen so that the transition occurs near the low, middle and high end of our support instance sizes, respectively. 
+Our data sets contained 11 independent runs per instance with 1\,000 instances for each of the 21 instance sizes 500, 600, ..., 1\,900, 2\,000, 2\,500, ..., 4\,500. 
 
 In addition, we ran ESA three times using three different values for the number of support instance sizes: 8, 12 and 16. In each case, all remaining instance sizes were used as challenge data. These experiments produced a total of nine different ESA reports which we examined in detail. 
 We also provided ESA with a four parameter, two term polynomial model of the form $a\cdot n^b + c\cdot n^d$, to see if ESA could accurately fit four parameter models of the correct scaling class. 
