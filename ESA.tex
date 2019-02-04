@@ -594,31 +594,40 @@ To investigate these effects, we used running time data sets generated with two 
 These values were chosen so that the transition occurs near the low, middle and high end of our support instance sizes, respectively. 
 Our data sets contained 11 independent runs per instance with 1\,000 instances for each of the 21 instance sizes 500, 600, ..., 1\,900, 2\,000, 2\,500, ..., 4\,500. 
 
-In addition, we ran ESA three times using three different values for the number of support instance sizes: 8, 12 and 16. In each case, all remaining instance sizes were used as challenge data. These experiments produced a total of nine different ESA reports which we examined in detail. 
-We also provided ESA with a four parameter, two term polynomial model of the form $a\cdot n^b + c\cdot n^d$, to see if ESA could accurately fit four parameter models of the correct scaling class. 
-In the following, we present a selected subset of the results that illustrates our main observations. 
+In addition, we ran ESA three times using three different values for the number of support instance sizes: 8, 12 and 16; in each case, all remaining instance sizes were used as challenge data. 
+These experiments produced a total of nine different ESA reports, which we examined in detail. 
+We also provided ESA with a four-parameter, two-term polynomial model of the form $a\cdot n^b + c\cdot n^d$, to determine if the scaling behaviour could be correctly identified, and accurate scaling models could be produced.
 
 \textbf{What happens when the transition is early?}
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.7\textwidth]{fittedModels-2-5-14-16s.pdf}
-\caption{\textbf{Early transition example:} generated using $4.8\cdot 10^{-15} \cdot x^5 + 9.6\cdot 10^{-7} \cdot x^2$ with 16 support instance sizes. \note{We'll need to decide whether or not we want colour figures. They cost extra, but you have to contact them to obtain a quote for the price. I think for these three figures in particular it would be nearly impossible to understand them without colour (and I'm not confident that I could make them legible without).}}
+\caption{\textbf{Early transition example:} generated using $4.8\cdot 10^{-15} \cdot x^5 + 9.6\cdot 10^{-7} \cdot x^2$ with 16 support instance sizes. \note{We'll need to decide whether or not we want colour figures. They cost extra, but you have to contact them to obtain a quote for the price. I think for these three figures in particular it would be nearly impossible to understand them without colour (and I'm not confident that I could make them legible without). HH: We can decide this once the paper has been accepted. Leave as colour figures for now.}}
 \label{fig:AA-competing-2-5-14-16s}
 \end{figure*}
-When the transition between terms occurs among the small support instance sizes, the fit of the single term model is able to capture the asymptotic scaling relatively accurately, \eg{}, see Figure~\ref{fig:AA-competing-2-5-14-16s}, where a polynomial model of degree 4.97 fits the challenge data very well. In comparison, the two term polynomial model provides a better fit for the small instance sizes, but yields larger predicted bootstrap intervals. For this model ESA fit a degree of 2.00 for one of the polynomial terms and a degree of 5.14 for the other and reported that this model also fit the data very well. 
+When the transition between dominant terms occurs within the lower range of small support instance sizes, the fit of the single-term model is able to capture the asymptotic scaling relatively accurately, \eg{}, see Figure~\ref{fig:AA-competing-2-5-14-16s}, where a polynomial model of degree 4.97 fits the challenge data very well. In comparison, the two-term polynomial model provides a better fit for the small instance sizes, but yields larger predicted bootstrap intervals. For this model, ESA fit a degree of 2.00 for one of the polynomial terms and a degree of 5.14 for the other, and reported that this model also fit the data very well. 
+%HH: added
+Considering the large number of parameters in the more flexible two-term polynomial model, this is not surprising.
 
-These results are positive, but we note that ESA does have some difficulty fitting the 4 parameter model. One indication is that higher-quality default parameter values are needed for the two term model than for single term models. Another sign can be seen by looking at the confidence intervals for the degrees of each term in the four parameter model, $[1.41,4.87]$ and $[4.77,6.26]$. These intervals are both larger than the single term model's interval and we see that they overlap, that is, in some cases the degrees were both large. We believe this likely corresponds to a large support instance size outlier that caused ESA to over-fit. 
+These results are positive, but we note that ESA experiences some difficulties fitting the 4 parameter model. 
+In particular, higher-quality initial parameter values are needed for the two term model than for single-term models. Furthermore, the confidence intervals for the degrees of each term in the four-parameter model are relatively large and overlapping, at $b \in [1.41,4.87]$ and $d \in [4.77,6.26]$. 
+We believe that this is caused by outliers in the data for large support instances sizes that lead to some model overfitting within ESA.
 
-\textbf{What happens when the transition is mid?}
+\textbf{What happens when the transition occurs near the middle of the support range?}
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.7\textwidth]{fittedModels-2-5-15-16s.pdf}
 \caption{\textbf{Mid transition example:} generated using $4.8\cdot 10^{-16} \cdot x^5 + 9.6\cdot 10^{-7} \cdot x^2$ with 16 support instance sizes.}
 \label{fig:AA-competing-2-5-15-16s}
 \end{figure*}
-As the transition between the two terms moves closer to the large end of the support instance sizes, the quality of the ESA report starts to degrade. Overall, ESA is still able to do quite well as long as the location of the transition is completely covered by the support instance sizes, as seen in Figure~\ref{fig:AA-competing-2-5-15-16s}, where the predicted bootstrap intervals for both types of polynomial models capture the observed challenge data. The single term model is reported to ``fit the data very well'' despite that it does not quite capture the true degree of the asymptotic scaling in its interval $[4.00,4.74]$. On the other hand, the two term model, which is only reported to ``tend to fit the data'', does capture the true asymptotic scaling with the intervals $[1.50,2.30]$ and $[4.78,7.06]$. 
+As the transition between the two terms moves closer to the large end of the support instance sizes, the quality of the ESA report starts to degrade. Overall, ESA is still able to do quite well, as long as the location of the transition is completely covered by the support instance sizes, as seen in Figure~\ref{fig:AA-competing-2-5-15-16s}, where the bootstrap intervals for the predictions obtained from both types of polynomial models capture the observed challenge data. 
+The single-term model is reported to ``fit the data very well'', although it does not quite capture the true degree of the asymptotic scaling with a reported confidence interval of $[4.00,4.74]$. 
+On the other hand, the two-term model, which is only reported to ``tend to fit the data'', does capture the true asymptotic scaling, with the confidence intervals of $b \in [1.50,2.30]$ and $d \in [4.78,7.06]$. 
 
-In this case, we also see that ESA had less trouble distinguishing between the two polynomial terms when fitting the two term polynomial model, since the bootstrap intervals for the degrees of the two terms are disjoint. However, we also see that the size of the predicted bootstrap intervals for the two term model has increased significantly (see Figure~\ref{fig:AA-competing-2-5-15-16s}). We believe this is because there are only a small number of instance sizes past the midpoint of the transition, hence there is less data to help ESA recover from the presence of a single outlier. When we decrease the number of support instance sizes (data not shown) we find that the predicted bootstrap intervals are similarly large for the two term polynomial; however, the single term model is unable to accurately capture the asymptotic scaling.
+In this case, we also see that ESA had less trouble distinguishing between the two polynomial terms when fitting the two-term polynomial model, as evident from the disjoint bootstrap intervals for $b$ and $d$.
+However, we also see that the size of the predicted bootstrap intervals for the two-term model has increased significantly (see Figure~\ref{fig:AA-competing-2-5-15-16s}). 
+We believe this is causes by the fact that there is only a small number of instance sizes past the midpoint of the transition, and hence less data to help ESA recover from the effects of outliers. 
+When we decrease the number of support instance sizes (data not shown) we find that the predicted bootstrap intervals are similar in size for the two-term polynomial model; however, the single-term model is unable to accurately capture the asymptotic scaling.
 
 \textbf{What happens when the transition is late?}
 \begin{figure*}[t]
@@ -627,17 +636,30 @@ In this case, we also see that ESA had less trouble distinguishing between the t
 \caption{\textbf{Late transition example:} generated using $4.8\cdot 10^{-17} \cdot x^5 + 9.6\cdot 10^{-7} \cdot x^2$ with 16 support instance sizes.}
 \label{fig:AA-competing-2-5-16-16s}
 \end{figure*}
-The worst case scenario for ESA occurs when the transition between two competing terms happens after most or all of the support instance sizes, where ESA has little to no hope of correctly identifying the true asymptotic scaling. for an example of the worst-case behaviour, see Figure~\ref{fig:AA-competing-2-5-16-16s}, where the square-root exponential model appears to fit the data very well. However, ESA also identifies that the two term polynomial model fits the data very well. In practice, the safest course of action in this case is to collect more running time data -- in particular, larger challenge instance sizes -- and run ESA again. On the other hand, if this is not possible, a pragmatic user would be inclined to choose the square-root exponential model as the one that is the best fit, while keeping in mind that it may be an over-estimate for the true running time scaling. In fact, we can already begin to see that this is the case by examining the smallest support instance sizes, for which we can see that the curvature of the square-root exponential model is beginning to pull the model above the observed running times -- a sign which may generalize to other scenarios where the best-fit model may not be accurately capturing the scaling due to lower-order terms. 
+The worst-case scenario for ESA occurs when the transition in dominance between two competing terms occurs for instance sizes close to or beyond the largest support instance size, so that the true asymptotic scaling is heavily obscured on the given running time data. 
+This can be seen in Figure~\ref{fig:AA-competing-2-5-16-16s}, where the square-root exponential model appears to fit the data very well. 
+However, ESA also identifies that the two-term polynomial model fits the data very well, and thereby does not dismiss the correct scaling model.
+In practice, the safest course of action in such cases is to collect more running time data -- in particular, for larger challenge instance sizes -- and to run ESA again. 
+In cases where this is impossible, a pragmatic user would be inclined to choose the square-root exponential model as the one that is the best fit, while keeping in mind that it may be an over-estimate for the true running time scaling. 
+In our example, we can see that this is the case by examining the smallest support instance sizes, for which the curvature of the square-root exponential model is beginning to pull the model above the observed running times.
+%HH: <- also point to residual plots? It might even be worth including one ... (TODO)
+Similar situations may occure in other scenarios where the best-fit model may not accurately capture the asymptotic scaling due to the effects of lower-order terms. 
 
-We also observed that the size of the predicted bootstrap intervals continues to increase for the four parameter model. This is even more clear for the case with only 12 support instance sizes (data not shown), where the size of the predicted bootstrap intervals is huge ($4.4\cdot 10^4$ for instance size 4\,500). 
-We also tried running ESA on this data set with only 8 support instance sizes; however, ESA was unable to complete the analysis. After several attempts at restarting ESA, we found that the Levenberg-Marquardt algorithm simply was unable to fit the four parameter model to the data -- even when the default fitting parameters were set to the true values for the running time scaling, the implementation of the Levenberg-Mardquart algorithm we used crashed. 
+We also observed that the size of the bootstrap intervals for predicted running times continues to increase for the four-parameter model. This is even more clear for the case with only 12 support instance sizes (data not shown), where the bootstrap intervals for predicted running times are very large ($4.4\cdot 10^4$ for instance size 4\,500). 
+When running ESA on a variant of this scenario with only 8 support instance sizes, we found that the Levenberg-Marquardt algorithm simply was unable to fit the four-parameter model to the data -- even when the default fitting parameters were set to the true values for the running time scaling, the implementation of the Levenberg-Mardquart algorithm used in ESA simply crashed. 
 
-\textbf{What if we know something about the lower order terms?}
-Practical applications of ESA to algorithms with competing terms may have known scaling for start-up costs, \eg{}, the initialization of a data structure may be known to have quadratic scaling. Hence we may be inclined to use a three parameter, two term polynomial model of the form $a\cdot n^b + c\cdot n^2$. 
+\textbf{What happens if we have prior knowledge about the lower-order terms?}
+Practical applications of ESA to algorithms with competing terms may have known scaling for start-up costs; \eg{}, the initialization of a data structure may be known to have quadratic scaling. 
+Hence we may be inclined to use a scaling model that captures this prior knowledge, such as a three-parameter, two term polynomial model of the form $a\cdot n^b + c\cdot n^2$. 
 
-We ran ESA again on each of the 9 scenarios; however this time we used the three parameter, two term polynomial model. Overall, the results did not change significantly. In a few cases the fit of the 3 parameter model was slightly better for the small instance sizes; however, it appeared to remain unchanged for the challenge instance sizes. We also observed that the predicted bootstrap intervals were both slightly smaller and located slightly higher in most of the scenarios. The only exception to this observation was for the function $4.8\cdot 10^{-15} \cdot x^5 + 9.6\cdot 10^{-7} \cdot x^2$ when ESA was run with 8 support instance sizes  (a mid transition scenario). We found that with the four parameter model the predicted bootstrap intervals were very large (comparable to those in Figure~\ref{fig:AA-competing-2-5-16-16s}); however, with the three parameter model they were substantially smaller (comparable to those in Figure~\ref{fig:AA-competing-2-5-15-16s}). 
-Unfortunately, the Levenberg-Mardquart algorithm was still unable to successfully complete for all 1000 bootstrap samples of the $4.8\cdot 10^{-17} \cdot x^5+ 9.6\cdot 10^{-7} \cdot x^2$ data set when only 8 support instance sizes were used. 
-
+We ran ESA again on each of our 9 scenarios; however, this time we used the three-parameter, two-term polynomial model $a\cdot n^b + c\cdot n^2$. 
+Overall, the results produced by ESA did not change much. 
+In a few cases, the fit of the 3-parameter model was slightly better for the small instance sizes; however, it appeared to remain unchanged for the challenge instance sizes. 
+We also observed that the bootstrap intervals for predicted running times were slightly smaller and located slightly higher in most of the scenarios. 
+The only exception to this observation was for the function $4.8\cdot 10^{-15} \cdot x^5 + 9.6\cdot 10^{-7} \cdot x^2$ when ESA was run with 8 support instance sizes  (a mid-range transition scenario). 
+We found that the bootstrap confidence intervals for predictions obtained from the four-parameter model were very large (comparable to those in Figure~\ref{fig:AA-competing-2-5-16-16s}); however, the three-parameter model produced substantially smaller confidence intervals (comparable to those in Figure~\ref{fig:AA-competing-2-5-15-16s}). 
+Unfortunately, the Levenberg-Mardquart algorithm was still unable to run successfully on some of the 1000 bootstrap samples of the $4.8\cdot 10^{-17} \cdot x^5+ 9.6\cdot 10^{-7} \cdot x^2$ data set when only 8 support instance sizes were used. 
+%HH: <- reworded this; make sure it is still true (TODO)
 
 \section{Successful applications}
 \label{sec:Successful Applications}
