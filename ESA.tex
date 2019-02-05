@@ -54,9 +54,8 @@
 \begin{frontmatter}
 
 %\pretitle{}
-\title{Empirical Scaling Analyzer:}
+\title{Empirical Scaling Analyzer: \newline An Automated System for Empirical Analysis of Performance Scaling}
 \runningtitle{Empirical Scaling Analyzer}
-\subtitle{An Automated System for Empirical Analysis of Performance Scaling}
 
 % For one author:
 %\author{\inits{N.}\fnms{Name1} \snm{Surname1}\ead[label=e1]{first@somewhere.com}}
@@ -549,7 +548,7 @@ However, while this may indicate a good option for saving on computational expen
 In particular, when ESA does report a false positive, it does so with predicted confidence intervals that are orders of magnitude smaller than in the case with less instances per instance size; \eg{}, for instance size 4\,500 the median predicted interval size for the square-root exponential model on the polynomial data set was 3.2 when using 1500 instances spread between 3 instance sizes, compared to 7.4 for 1600 instances spread between 16 support instance sizes. 
 As a result, a user may be lead to incorrectly assume that ESA's best-fit model accurately captures the true scaling. 
 In real scenarios, we expect there to be an added challenge for ESA: coping with the effects of lower order scaling terms, which would likely significantly increase the probability that ESA will incorrectly classify the scaling when only a few support instances sizes are used. 
-Furthermore, as we discuss in Section~\ref{sec:Lower Order Terms}, the best safeguard of which we are aware against making incorrect assumptions due to lower order terms consists of looking at the degree to which the model fits both the support and challenge data. When a very small number of support instance sizes are available, this type of safeguard becomes unavailable, because there are not enough small support instance sizes to determine whether or not there is a systematic deviation pulling the fitted model away from the smallest support instance sizes.
+Furthermore, as we discuss in Section~\ref{sec:Lower Order Terms}, the best safeguard of which we are aware against making incorrect assumptions due to lower order terms consists of looking at the degree to which the model fits both the support and challenge data. When a very small number of support instance sizes are available, this type of safeguard becomes unavailable, because there are not enough small support instance sizes to determine whether or not there is a systematic deviation pulling the fitted model away from the running times observed on the smallest support instance sizes.
 %HH: <- why? please clarify. (DONE)
 
 \textbf{What happens when we reduce the number of independent runs per instance?}
@@ -565,7 +564,7 @@ In particular, for 1 run per instance, the median size of the bootstrap interval
 The percentage of false positives for the square-root exponential model on the polynomial data set is only 4.1\% with 1 run per instance compared to 74.1\% with 50 instances per instance size -- \ie{}, there are 18.1 times as many false positives for the square-root exponential model on the polynomial data set when reducing the number of instances per size by a factor of 10 than when reducing the number of runs per instance by a factor of 10. 
 %HH: <- better to express this as a factor in the false positive rate (DONE: change)
 
-Based on this striking difference, it is clear that if the time required to collect all of the running time data is constrained, then the best option is to use very few independent runs per instance and more instances per instance size, assuming these instances are available. This result aligns with our expectations, since using multiple instances captures variability due to both randomness in the algorithm (and/or noise in the execution environment) as well as differences between instances, whereas performing multiple runs per instance captures a strict subset of the total variability. Our result is also quite similar to the theoretical result by Birattari~\cite{Bir04}, which shows that using only a single run per instance with many instances is the optimal choice to reduce variance when considering the mean performance (over instances) of the mean performance (over independent runs). 
+Based on this striking difference, it is clear that if the time required to collect all of the running time data is constrained, then the best option is to use very few independent runs per instance and more instances per instance size, assuming these instances are available. This result aligns with our expectations, since using multiple instances captures variability due to both randomness in the algorithm (and/or noise in the execution environment) as well as differences between instances, whereas performing multiple runs per instance captures a strict subset of the total variability. This insight also underlies a theoretical result by Birattari~\cite{Bir04}, which shows that using only a single run per instance with many instances is the optimal choice when estimating the mean performance of a randomised algorithm over a distribution of multiple problem instances. 
 %HH: <- can we speculate why that is? it seems that using multiple instances captures variability due to randomness in the algorithm (and/or noise in the execution environment) as well differences between instances of the same size ... this is similar to the result by Birattari for estimating average running time for randomised algorithms on sets of problem instances (which we should likely cite here; DONE)
 
 \textbf{What happens when we increase the extrapolation distance?}
@@ -578,7 +577,8 @@ However, as the challenge instance size was moved from 2\,500 to 4\,500, the per
 At the same time, the square-root exponential model was reported to tend to fit the data 94.8\% of the time with challenge size 2\,500, but only 0.1\% of the time with challenge size 4\,500. 
 We obtained analogous results for the polynomial data set. 
 While this may seem somewhat unsurprising, it does indicate that the separation of the models fitted by ESA grows more quickly than the size of the predicted intervals, otherwise ESA's ability to distinguish between the models would not increase. 
-As a result, increasing the extrapolation distance is one of the best ways to obtain more reliable and statistically significant results with ESA. Of course, it comes at the cost of the target algorithm runs themselves requiring more running time. 
+As a result, increasing the extrapolation distance is one of the best ways to obtain more reliable and statistically significant results with ESA. 
+Of course, this comes at the cost of the target algorithm runs themselves requiring more running time. 
 %HH: <- let's make sure that we introduce the term 'target algorithm' for the algorithm whose performance we are investigating using ESA early in the paper, and then use it in places like this, where there may be ambiguity between the target algorithm and ESA itself. (DONE)
 
 \textbf{What happens when we decrease the number of bootstrap samples used by ESA?}
@@ -647,7 +647,7 @@ In cases where this is impossible, a pragmatic user would be inclined to choose 
 In our example, we can see limited support that the square-root exponential model is an over-estimate by examining the smallest support instance sizes, for which the curvature of the square-root exponential model is just beginning to pull the model above the observed running times.
 %HH: <- also point to residual plots? It might even be worth including one ... (DONE)
 %YP: I chose not to include one here. Looking at the residual plot, it's not a great example, as the deviations are relatively minor (although they are larger for the sqrt-exp model than the two terms poly model). I've updated the wording a bit to indicate this. Indeed, I chose this example because the sqrt-exp model appears to be a very good fit for the data. 
-Similar situations may occur in other scenarios where the best-fit model may not accurately capture the asymptotic scaling due to the effects of lower-order terms. One useful method for detecting this is to examine the residual plots generated by ESA, and in particular to zoom in on the smallest support instance sizes to look for systematic deviations or trends indicating that the model may not accurately predict the data for smaller instance sizes (and hence, perhaps it may also not fit the data for larger instance sizes).
+Similar situations may occur in other scenarios where the best-fit model may not accurately capture the asymptotic scaling due to the effects of lower-order terms. One useful method for detecting this is to examine the residual plots generated by ESA, and in particular to zoom in on the smallest support instance sizes to look for systematic deviations or trends indicating that the model may not accurately predict the data for smaller instance sizes (and hence may also not fit the data for larger instance sizes).
 
 We also observed that the size of the bootstrap intervals for predicted running times continues to increase for the four-parameter model. This is even more clear for the case with only 12 support instance sizes (data not shown), where the bootstrap intervals for predicted running times are very large ($4.4\cdot 10^4$ for instance size 4\,500). 
 When running ESA on a variant of this scenario with only 8 support instance sizes, we found that the Levenberg-Marquardt algorithm simply was unable to fit the four-parameter model to the data -- even when the default fitting parameters were set to the true values for the running time scaling, the implementation of the Levenberg-Mardquart algorithm used in ESA simply crashed. 
@@ -668,59 +668,108 @@ Unfortunately, the Levenberg-Mardquart algorithm was still unable to run success
 \section{Successful applications}
 \label{sec:Successful Applications}
 
-During the development of ESA, earlier versions were used in several projects to analyze the empirical scaling of various high-performance algorithms \cite{Mu15}. These early applications provided interesting results, as well as valuable insights that helped us improve ESA subsequently. 
+During the development of ESA, earlier versions were used in several projects to analyze the empirical scaling of high-performance algorithms for several widely studied NP-hard problems. 
+These early applications provided interesting results, as well as valuable insights that guided the development of the version of ESA presented here.
 %HH: I added the following, but this doesn't quite set the stage for what follows. Please modify / amend this to make it clear what we summarise in the following and why (e.g., why don't we outline the first, published applications?) - TODO
 %YP: I'm not too sure exactly why that section is there (as it was there before I started working on the paper). My best guess is that at the time all of those examples were unpublished anywhere other than Zongxu's thesis (although this isn't true now).
+%HH: I've left some detailed notes below. The main idea is to briefly summarise all results obtained with previous versions of ESA
 In the following, we outline the findings obtained from these earlier applications.
 
-A first use of ESA extended our earlier scaling analysis of six prominent SAT solvers on random phase-transition 3-SAT instances \cite{MuHoo15} to two classes of random 4-SAT instances. This work, described in detail in Section~5.4 of \cite{Mu15}, yielded several interesting results: for phase-transition instances, exponential (for BalancedZ) or root-exponential models (for the other solvers) usually characterize best the running times of SLS-based, incomplete SAT solvers, while DPLL-based, complete solvers demonstrate scaling behaviour well characterized by exponential models; for solving a class of less-constrained instances believed to be intrinsically challenging, we showed that WalkSAT/SKC and kcnfs, two widely studied SAT solvers, scale significantly better than on phase-transition random instances, in that a polynomial model best describes the observed performance scaling.
+%HH: new:
+The methodology underlying ESA was first used to study the empirical scaling of the running time of Concorde, a prominent TSP solver.
+Concorde represents the long-standing state of the art in exact TSP solving; it incorporates mechanisms based on over 50 years of research on the TSP and has been used to solve the largest non-trivial TSP instances for which provably optimal solutions are known \cite{AppEtAl06,AppEtAl12}.
+%HH: refs can be found in HooStu14
+%HH: now briefly outline the main findings of HooStu14 (TODO)
 
+%HH: reword the following to first outline DubEtAl15, then talk about additional results. I doubt we want to show any results for earlier versions of ESA, so take out all graphs etc. that are not produced by the latest version (TODO)
 In another application of ESA, we improved previous scaling results for the state-of-the-art inexact TSP solvers, EAX and LKH~\cite{DubEtAl15}, with additional data; details on these results are found in Section 6.3 in~\cite{Mu15}. ESA determined that EAX scales square-root exponentially, best described by a model of the form $a\cdot b^{\sqrt{n}}$ with $b\approx 1.123$, as shown in Figure~\ref{fig:ESA-fitted-models}. For LKH, we also observed evidence for root-exponential scaling, but we cannot rule out a polynomial model (see Figure~\ref{fig:Fitted-models-LKH}). We also used ESA to analyze the time required by the state-of-the-art complete TSP solver, Concorde, to find optimal solutions without proving optimality. A square-root exponential model of the form $a\cdot b^{\sqrt{n}}$, with $b \approx 1.25$ as illustrated in Figure~\ref{fig:Fitted-models-concorde}, was found to best describe the scaling behaviour. Besides, ESA produced substantial evidence that both EAX and LKH scale better than Concorde for finding optimal solutions to RUE instances.
 \begin{figure*}[t]
-\noindent \begin{centering}
-\includegraphics[width=0.7\textwidth]{LKH_fittedModels}  \vspace{-5mm} 
-% \includegraphics[width=0.7\textwidth]{fittedModels}
-
-\par\end{centering}
-
-\caption{Scaling models for median running times of LKH for finding optimal solutions to RUE instances.}\label{fig:Fitted-models-LKH} 
+	\noindent \begin{centering}
+		\includegraphics[width=0.7\textwidth]{LKH_fittedModels}  \vspace{-5mm} 
+		% \includegraphics[width=0.7\textwidth]{fittedModels}
+		
+		\par\end{centering}
+	
+	\caption{Scaling models for median running times of LKH for finding optimal solutions to RUE instances.}\label{fig:Fitted-models-LKH} 
 \end{figure*}
 \begin{figure*}[t]
-\noindent \begin{centering}
-\includegraphics[width=0.7\textwidth]{concorde_fittedModels}  \vspace{-5mm}
-\par\end{centering}
-
-\caption{Scaling models for the medians of the running times for Concorde to find optimal solutions of RUE instances. }\label{fig:Fitted-models-concorde} 
+	\noindent \begin{centering}
+		\includegraphics[width=0.7\textwidth]{concorde_fittedModels}  \vspace{-5mm}
+		\par\end{centering}
+	
+	\caption{Scaling models for the medians of the running times for Concorde to find optimal solutions of RUE instances. }\label{fig:Fitted-models-concorde} 
 \end{figure*}
-
 
 Finally, using ESA, we investigated the impact of parameter settings and automated algorithm configuration on the performance scaling of inexact TSP algorithms~\cite{MuEtAl16}. For EAX, algorithm configuration helps improve the scaling, which can be further improved by adapting the population size with instance size. In particular, we achieved an $\approx1.13$-fold improvement in the median running time for EAX to solve RUE instances of size $n=4\,500$ and expect the improvement to be even more significant for larger instances. For LKH, we observed significant impact of parameter settings on performance scaling, but the state-of-the-art algorithm configurator SMAC tends to overfit the running times for smaller instances and thus produces configurations for which LKH scales worse.
 
-%HH: The following explanation comes late. This may be OK if you fix the issue pointed out near the beginning in a compelling way, but currently, it doesn't work. (TODO: fix above and/or here)
-The results in this section are from previous work done using an earlier version of ESA. The only change to the methodology underlying ESA since these results were obtained is the addition of the nested bootstrap sampling procedure to handle independent runs of a randomized algorithm on an instance.  Unfortunately, the only remaining copy of the original data are files containing the per-instance medians, so we were unable to directly compare the newest version of ESA to the old on the original data. To compare with the older version of ESA, we reran EAX on the same instance set using 11 independent runs per instance. Overall, the results are qualitatively very similar to those previously found. However, we did find that the sizes of the bootstrap intervals for the observed challenge instances increased by 4.2\% on average, where the size of an interval is defined to be the upper bound divided by the lower bound. Similarly, the size of the intervals for the square-root exponential model that best describes the running times increased by an 0.1\% on average. 
+In a second line of work, the empirical scaling analysis approach underlying ESA has been used to study high-performance solvers for the propositional satisfiability problem (SAT).
+Specifically, ... six prominent SAT solvers on random phase-transition 3-SAT instances \cite{MuHoo15}. 
+%HH: <- briefly outline main findings of MoHoo15 (TODO); focus on differences between complete and incomplete solvers; mention names of solvers and give references for them (from MuHoo15). Reword the following to build on these results (TODO):
+This analysis was later expanded to two classes of random 4-SAT instances. This work, described in detail in Section~5.4 of \cite{Mu15}, yielded several interesting results: for phase-transition instances, exponential (for BalancedZ) or root-exponential models (for the other solvers) usually characterize best the running times of SLS-based, incomplete SAT solvers, while DPLL-based, complete solvers demonstrate scaling behaviour well characterized by exponential models; for solving a class of less-constrained instances believed to be intrinsically challenging, we showed that WalkSAT/SKC and kcnfs, two widely studied SAT solvers, scale significantly better than on phase-transition random instances, in that a polynomial model best describes the observed performance scaling.
+
+%HH: modified:
+Of course, one may wonder how all these results compare to those produced by the improved version of ESA presented in this work.
+We recall that the only change to the methodology underlying ESA is the addition of the nested bootstrap sampling procedure to handle multiple independent runs of a randomized algorithm on a given problem instance.  
+%HH: <- is this true? please check carefully against section 2 and modify here as needed. I am specifically worried about the modified interpretation procedure (TODO)
+Unfortunately, the only remaining copies of the data from earlier studies contain per-instance median running times, so we were unable to perform direct comparisons of the earlier and most recent versions of ESA on the original data. We therefore reran EAX on the same instance set used by \citet{??}, performing 11 independent runs per instance.
+On this data, the version of ESA described here yielded results that are qualitatively very similar to those reported by \citet{??}. 
+%HH: <- fill in references.
+We observed that sizes of the bootstrap confidence intervals for the observed running times on challenge instances increased by 4.2\% on average, where the size of the interval is defined as its upper limited divided by its lower bound. Similarly, the size of the confidence intervals for the square-root exponential model that best describes the running times increased by an 0.1\% on average. 
+This is unsurprising, since the additional resampling over multiple independent runs per instance allows us to capture additional variability in the scaling models due to randomisation of the target algorithm, whereas previously, the statistical nature of the observed madian running times was not taken into account.
 %(note that there were significantly more instances available for each support instance size than for the  challenge instance sizes, hence the uncertainty of the fitted models is much smaller than the uncertainty of the challenge instance sizes). 
 %By properly handling the uncertainty from independent runs of a randomized target algorithm ESA is less likely to obtain false-negative results by rejecting the correct scaling model class; however, in our experiments we have not yet observed a scenario where using the old version of ESA rejected a scaling model when the current one fails to do so.
+
 
 \section{Conclusions and future work}
 \label{sec:Conclusion}
 
-In this work, we introduced the empirical scaling analyzer (ESA), an automated tool for analyzing the empirical scaling of algorithm performance with input size. ESA can fit multiple models on the input running time data and generate results in the form of technical reports. These reports contain easy-to-read figures and tables as well as automatically generated interpretations. We also presented new methodology to appropriately handle the variance between independent runs of a randomized algorithm and a novel method for automatically interpreting the scaling analysis results.  
+In this work, we introduced the empirical scaling analyzer (ESA), an automated tool for analyzing the empirical scaling of algorithm performance with input size. 
+ESA can fit multiple models on running time data collected for a given algorithm across a series of inputs of varying size and generate results in the form of technical reports. 
+These reports contain easy-to-read figures and tables, as well as automatically generated interpretations. 
+We also presented new methodology to appropriately handle the variance between independent runs of a randomized algorithm and a novel method for automatically interpreting the scaling analysis results.  
 
-We presented a rigorous analysis of ESA's performance when subjected to challenging scenarios. In many cases, if ESA's output appears unreliable (\eg{}, the size of predicted bootstrap intervals is large for all of the fitted models), more data is needed -- perhaps running times for more instance sizes, larger challenge instance sizes, more instances per size or more independent runs per instance. In particular, we found that increasing the number of instances used per instance size is a more cost-effective means of increasing the power of ESA's statistical tests than increasing the number of independent runs per instance. In addition, increasing the extrapolation distance by using larger challenge instance sizes is one of the most reliable (albeit perhaps one of the most costly) means to increase ESA's statistical power. Based on our results, we also caution against using small numbers of support instance sizes, since this can make it challenging or impossible to identify whether or not lower order terms or outliers have cased ESA to incorrectly classify the algorithm's scaling. From our experience, we recommend to use around 11 support instance sizes, though the exact number needed will vary by scenario. 
+We presented a rigorous analysis of ESA's performance on several types of challenging scenarios. 
+In many cases, if ESA's output appears unreliable (\eg{}, the size of predicted bootstrap intervals is large for all of the fitted models), more data is needed -- perhaps running times for more instance sizes, larger challenge instance sizes, more instances per size or more independent runs per instance. 
+In particular, we found that increasing the number of instances per instance size is a more cost-effective means of increasing the power of the statistical analyses performed by ESA than increasing the number of independent runs per instance. 
+In addition, increasing the extrapolation distance by using larger challenge instance sizes is one of the most reliable (albeit costly) means to increase ESA's ability to discriminate between different scaling models. 
+%HH: <- reworded, make sure you agree (TODO)
+Based on our extensive empirical analysis, we also caution against using small numbers of support instance sizes, since this can make it challenging or impossible to identify detrimental effects of lower-order terms or outliers on the results obtained from ESA.
+From our experience, we recommend to use around 11 support instance sizes, although the exact number required varies between application scenarios. 
 
-We found that ESA can correctly classify an algorithm's asymptotic scaling when lower order terms are present, provided that the transition between the two models occurs early enough in the support sizes. However, increasing the number of parameters in a parametric model to capture both the lower order terms and the asymptotic scaling substantially increases the size of the predicted bootstrap intervals and causes ESA to have more trouble fitting the models. Furthermore, ESA has significant trouble and can incorrectly classify the scaling if the transition between the models occurs after the large support instance sizes. 
+We found that ESA can correctly recognize the asymptotic performance scaling of a given algorithm when lower-order terms are present, provided that the transition between the two competing terms of the scaling model occurs towards the lower end of the support instance sizes used for the scaling analysis. 
+However, increasing the number of parameters in a parametric model to capture the lower-order terms and the asymptotic scaling substantially increases the size of the predicted bootstrap intervals and can cause ESA to experience difficulties in fitting the models. 
+If the effect of a lower-order term dominates that of the asymptotic scaling behaviour across all support instance sizes, ESA is likely to correctly recognize the true asymptotic scaling.
 
-Overall, we have found that ESA is able to perform well in most scenarios. Unlike theoretical running time analysis, there is always the risk that a lower order term is initially dominating the running time, and hence larger instance sizes are needed to accurately identify the true asymptotic scaling. Nevertheless, empirical scaling analysis plays a key role in characterizing and understanding the behaviour of high-performance algorithms for important problems. This is particularly true for scenarios where the observed performance of algorithms exceeds the expectations provided by a worst case analysis or in cases where theoretical assumptions about the expected behaviour of an algorithm may not hold true for real-world instances. The methodology underlying ESA is widely applicable to problems and algorithms where running time data can be gathered for various instance sizes. ESA provides an easy and convenient way to apply empirical scaling analysis to algorithms of interest. Thus, we believe that ESA will prove to be a useful tool for researchers studying both the empirical and theoretical scaling behaviour of algorithms, and we hope that ESA will promote and enhance such studies.
+Overall, we have found that ESA is able to perform well in most scenarios. 
+Unlike theoretical running time analysis, there is always the risk that a lower-order term is initially dominating the running time, and hence larger instance sizes are needed to accurately identify the true asymptotic scaling. Nevertheless, empirical scaling analysis plays a key role in characterizing and understanding the behaviour of high-performance algorithms for important problems. 
+This is particularly true for scenarios where the observed performance of algorithms exceeds the expectations provided by a worst-case analysis, as well as in cases where theoretical assumptions about the expected behaviour of an algorithm may not hold for real-world instances. 
+The methodology underlying ESA is widely applicable to problems and algorithms where running time data can be gathered for various instance sizes. 
+ESA provides an easy and convenient way to apply empirical scaling analysis to algorithms of interest. 
+Thus, we believe that ESA will prove to be a useful tool for researchers studying both the empirical and theoretical scaling behaviour of algorithms, and we hope that ESA will promote and enhance such studies.
 
-There are several directions for future improvements of ESA. In particular, it would be interesting to automatically select models from a large family of functions based on input data. This could also facilitate fitting of models with lower-order terms. One possible approach towards this end involves repeated fitting of models, first on the original data, then on the residues, in order to obtain a model with several terms. %Extended in this way, ESA could become easily applicable to an even broader range of algorithms with little human input, and may produce even more interesting results. Future work could also extend ESA to perform sensitivity analysis on each of the support instance sizes. In this way, users could be alerted if it appears that the presence of a single outlying data point is causing the fitted models to incorrectly capture the running time scaling. 
-Currently one of ESA's biggest limiting factors is the requirement that instances be grouped by size. Developing new scaling methodology that allows users to simply input a collection of instances with varying sizes, would be extremely useful for many practical application scenarios, since it may not always be possible to collect instances grouped by size. We believe that many users of ESA may be motivated to find upper or lower bounds on the running times required to solve very large instances. To this end, future extensions of ESA could be developed that fit tight bounds on the running time scaling to provide users with such estimates.
+There are several directions for future improvements of ESA. 
+In particular, it would be interesting to automatically select models from a large family of functions based on input data. 
+This could also facilitate fitting of models with lower-order terms. 
+One possible approach towards this end involves repeated fitting of models, first on the original data, then on the residues, in order to obtain a model with several terms. %Extended in this way, ESA could become easily applicable to an even broader range of algorithms with little human input, and may produce even more interesting results. Future work could also extend ESA to perform sensitivity analysis on each of the support instance sizes. In this way, users could be alerted if it appears that the presence of a single outlying data point is causing the fitted models to incorrectly capture the running time scaling. 
+Currently, one of ESA's biggest limiting factors is the requirement that instances be grouped by size. 
+Since it is not always possible to collect instances grouped by size, it would be extremely useful for many practical application scenarios to develop new methodology for empirical scaling analysis that overcomes this limitation.
+Furthermore, we believe that many users of ESA may be motivated to find upper or lower bounds on the running times required to solve very large instances. 
+To this end, future extensions of ESA could be developed that fit tight bounds on the running time scaling to provide users with such estimates.
 
-Another interesting avenue of study is the performance of ESA when used to analyze the scaling of polynomial-time algorithms. Preliminary results indicate that such algorithms tend to have significantly less noise in their running times than the heuristic, $\mathcal{NP}$-hard algorithms that have been the primary subject of our study so far. Very small bootstrap intervals can provide new challenges for ESA that will need to be overcome in future extensions, since all of the fitted models tend to be rejected. The introduction of tight, upper and lower bounds to ESA's methodology may also be a method for resolving this challenge.
+Another interesting avenue of study is the performance of ESA when used to analyze the scaling of polynomial-time algorithms. 
+Preliminary results indicate that such algorithms tend to show significantly less statistical variation in their running times than the heuristic, $\mathcal{NP}$-hard algorithms that have been the primary subject of our study so far. 
+Very small bootstrap intervals can provide new challenges for ESA that will need to be overcome in future extensions, since in such cases, all of the fitted models tend to be rejected. 
+The introduction of tight upper and lower bounds into the methodology underlying ESA may provide a way to overcome this challenge.
 
-In addition, we are currently working on uses of ESA in the development of automated algorithm configuration procedures for better scaling behaviour. Such procedures could make automated configuration even more applicable to real-world situations, as problem instances of practical interest can take a long time to solve. Automated configuration usually requires many runs of the given target algorithm with different parameter settings, which can make it infeasible to run a configuration procedure directly on large, challenging instances.
+In addition, we are currently working on uses of ESA in the development of automated algorithm configuration procedures for better scaling behaviour. 
+Such procedures could make automated configuration even more applicable to real-world situations, as problem instances of practical interest can take a long time to solve. 
+Automated configuration usually requires many runs of the given target algorithm with different parameter settings, which can make it infeasible to run a configuration procedure directly on large, challenging instances.
 Previous work on the problem of automatically configuring algorithms for improved performance scaling has focused on generic protocols for using existing configurators~\cite{StyEtAl12,StyHoo13}. 
-An alternative consists of incorporating empirical scaling analysis, as performed by ESA, more directly into algorithm configuration. Unfortunately, the current version of ESA requires running time data for many problem instances of different sizes,
-which can take a long time to produce. Thus, it will be important to design a way to reduce the time, possibly by leveraging previously fitted models, \eg{}, by integrating Bayesian methods into empirical scaling analysis, with a previous model acting as the prior for model fitting. This could lead to an enhanced version of ESA that could then be integrated into a future configuration procedure.
+An alternative consists of incorporating empirical scaling analysis, as performed by ESA, more directly into algorithm configuration. 
+Unfortunately, the current version of ESA requires running time data for many problem instances of different sizes,
+which can take a long time to produce. 
+Thus, it will be important to design a way to reduce the time, possibly by leveraging previously fitted models, \eg{}, by integrating Bayesian methods into empirical scaling analysis, with a previous model acting as the prior for model fitting. 
+This could lead to an enhanced version of ESA that could then be integrated into a future configuration procedure.
 
 
 \begin{acks}
