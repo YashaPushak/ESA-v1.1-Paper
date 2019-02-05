@@ -670,52 +670,40 @@ Unfortunately, the Levenberg-Mardquart algorithm was still unable to run success
 
 During the development of ESA, earlier versions were used in several projects to analyze the empirical scaling of high-performance algorithms for several widely studied NP-hard problems. 
 These early applications provided interesting results, as well as valuable insights that guided the development of the version of ESA presented here.
-%HH: I added the following, but this doesn't quite set the stage for what follows. Please modify / amend this to make it clear what we summarise in the following and why (e.g., why don't we outline the first, published applications?) - TODO
+%HH: I added the following, but this doesn't quite set the stage for what follows. Please modify / amend this to make it clear what we summarise in the following and why (e.g., why don't we outline the first, published applications?) - DONE
 %YP: I'm not too sure exactly why that section is there (as it was there before I started working on the paper). My best guess is that at the time all of those examples were unpublished anywhere other than Zongxu's thesis (although this isn't true now).
 %HH: I've left some detailed notes below. The main idea is to briefly summarise all results obtained with previous versions of ESA
 In the following, we outline the findings obtained from these earlier applications.
 
 %HH: new:
 The methodology underlying ESA was first used to study the empirical scaling of the running time of Concorde, a prominent TSP solver.
-Concorde represents the long-standing state of the art in exact TSP solving; it incorporates mechanisms based on over 50 years of research on the TSP and has been used to solve the largest non-trivial TSP instances for which provably optimal solutions are known \cite{AppEtAl06,AppEtAl12}.
+Concorde represents the long-standing state of the art in exact TSP solving; it incorporates mechanisms based on over 50 years of research on the TSP and has been used to solve the largest non-trivial TSP instances for which provably optimal solutions are known~\cite{AppEtAl06,AppEtAl12}.
 %HH: refs can be found in HooStu14
-%HH: now briefly outline the main findings of HooStu14 (TODO)
+%HH: now briefly outline the main findings of HooStu14 (DONE)
+We fitted an exponential model of the form $a\cdot b^n$ with $b \approx 1.003$ to the data; however, it was rejected with 95\% confidence in favour of a square-root exponential model of the form $a\cdot b^{\sqrt{n}}$, with $b \approx 1.24$. 
 
-%HH: reword the following to first outline DubEtAl15, then talk about additional results. I doubt we want to show any results for earlier versions of ESA, so take out all graphs etc. that are not produced by the latest version (TODO)
-In another application of ESA, we improved previous scaling results for the state-of-the-art inexact TSP solvers, EAX and LKH~\cite{DubEtAl15}, with additional data; details on these results are found in Section 6.3 in~\cite{Mu15}. ESA determined that EAX scales square-root exponentially, best described by a model of the form $a\cdot b^{\sqrt{n}}$ with $b\approx 1.123$, as shown in Figure~\ref{fig:ESA-fitted-models}. For LKH, we also observed evidence for root-exponential scaling, but we cannot rule out a polynomial model (see Figure~\ref{fig:Fitted-models-LKH}). We also used ESA to analyze the time required by the state-of-the-art complete TSP solver, Concorde, to find optimal solutions without proving optimality. A square-root exponential model of the form $a\cdot b^{\sqrt{n}}$, with $b \approx 1.25$ as illustrated in Figure~\ref{fig:Fitted-models-concorde}, was found to best describe the scaling behaviour. Besides, ESA produced substantial evidence that both EAX and LKH scale better than Concorde for finding optimal solutions to RUE instances.
-\begin{figure*}[t]
-	\noindent \begin{centering}
-		\includegraphics[width=0.7\textwidth]{LKH_fittedModels}  \vspace{-5mm} 
-		% \includegraphics[width=0.7\textwidth]{fittedModels}
-		
-		\par\end{centering}
-	
-	\caption{Scaling models for median running times of LKH for finding optimal solutions to RUE instances.}\label{fig:Fitted-models-LKH} 
-\end{figure*}
-\begin{figure*}[t]
-	\noindent \begin{centering}
-		\includegraphics[width=0.7\textwidth]{concorde_fittedModels}  \vspace{-5mm}
-		\par\end{centering}
-	
-	\caption{Scaling models for the medians of the running times for Concorde to find optimal solutions of RUE instances. }\label{fig:Fitted-models-concorde} 
-\end{figure*}
+%HH: reword the following to first outline DubEtAl15, then talk about additional results. I doubt we want to show any results for earlier versions of ESA, so take out all graphs etc. that are not produced by the latest version (DONE)
+In another application of ESA, we studied the scaling for the state-of-the-art inexact TSP solvers, EAX~\cite{NagKob13} and LKH~\cite{helsgaun2000effective} on the same set of random uniform Euclidean instances~\cite{DubEtAl15}. However, since EAX and LKH are inexact solvers, they cannot prove the optimality of the solutions they find, and hence we recorded the running times required to find the optimal solution qualities previously found using Concorde. Unfortunately, some of the larger problem instances remained unsolved even with long runs of Concorde, which added additional uncertainty into the scaling analysis.
 
-Finally, using ESA, we investigated the impact of parameter settings and automated algorithm configuration on the performance scaling of inexact TSP algorithms~\cite{MuEtAl16}. For EAX, algorithm configuration helps improve the scaling, which can be further improved by adapting the population size with instance size. In particular, we achieved an $\approx1.13$-fold improvement in the median running time for EAX to solve RUE instances of size $n=4\,500$ and expect the improvement to be even more significant for larger instances. For LKH, we observed significant impact of parameter settings on performance scaling, but the state-of-the-art algorithm configurator SMAC tends to overfit the running times for smaller instances and thus produces configurations for which LKH scales worse.
+We found that EAX likely scaled as a square-root exponential model, with some possibility of polynomial scaling. We studied two versions of LKH (1.3 and 2) and we found that version 1.3 appeared to scale as a square-root exponential model, while version 2 appeared to have observed scaling between a square-root exponential model and a polynomial model. All three methods obtained better scaling for finding optimal solution costs than Concorde, with degrees $b \approx 1.12, 1.20 \text{ and } 1.18$ for the square-root exponential models fitted for EAX, LKH 1.3 and LKH 2, respectively. Later, we improved these results with even longer runs of Concorde to find the optimal solutions for nearly all of the instances (see Section 6.3 in~\cite{Mu15}). ESA confirmed that EAX scaling is consistent with a square-root exponential model, but for LKH 2, we continued to observe scaling between the two models. 
+
+Finally, using ESA, we investigated the impact of parameter settings and automated algorithm configuration on the performance scaling of the two inexact TSP algorithms~\cite{MuEtAl16}. For EAX, algorithm configuration helps improve the scaling, which can be further improved by adapting the population size with instance size. In particular, we achieved an $\approx1.13$-fold improvement in the median running time for EAX to solve RUE instances of size $n=4\,500$ and expect the improvement to be even more significant for larger instances. For LKH, we observed significant impact of parameter settings on performance scaling, but the state-of-the-art algorithm configurator SMAC~\cite{hutter2011sequential} tends to overfit the running times for smaller instances and thus produces configurations for which LKH scale worse.
 
 In a second line of work, the empirical scaling analysis approach underlying ESA has been used to study high-performance solvers for the propositional satisfiability problem (SAT).
-Specifically, ... six prominent SAT solvers on random phase-transition 3-SAT instances \cite{MuHoo15}. 
-%HH: <- briefly outline main findings of MoHoo15 (TODO); focus on differences between complete and incomplete solvers; mention names of solvers and give references for them (from MuHoo15). Reword the following to build on these results (TODO):
-This analysis was later expanded to two classes of random 4-SAT instances. This work, described in detail in Section~5.4 of \cite{Mu15}, yielded several interesting results: for phase-transition instances, exponential (for BalancedZ) or root-exponential models (for the other solvers) usually characterize best the running times of SLS-based, incomplete SAT solvers, while DPLL-based, complete solvers demonstrate scaling behaviour well characterized by exponential models; for solving a class of less-constrained instances believed to be intrinsically challenging, we showed that WalkSAT/SKC and kcnfs, two widely studied SAT solvers, scale significantly better than on phase-transition random instances, in that a polynomial model best describes the observed performance scaling.
+Specifically, we studied three prominent SLS-based solvers, WalkSAT/SKC~\cite{selman1994noise}, BalancedZ~\cite{li2014balance} and probSAT~\cite{balint2014probsat}, and three prominent DPLL-based solvers, kcnfs~\cite{dequen2004kcnfs}, march\_hi~\cite{heule2009march} and march\_br~\cite{heule2013march} (version SAT+UNSAT), on random phase-transition 3-SAT instances~\cite{MuHoo15}. For each algorithm, we ran ESA using a polynomial model ($a\cdot n^b$) and an exponential model ($a\cdot b^n$). For the SLS-based algorithms, we looked at the median scaling on the satisfiable instances and we found that all three of the SLS-based solvers were best described by a polynomial model with degree $b \approx 3$, whereas the exponential model was inconsistent with most of the observations for the challenge data. Looking at the confidence intervals for the polynomial model parameters for the three SLS-based algorithms, we saw no evidence that any algorithm scaled significantly better than any other. In contrast, we studied the DPLL-based algorithms on both the satisfiable and unsatisfiable instances and found the opposite: they were all best described by the exponential model with $b \approx 1.03$ and were inconsistent with the polynomial model -- even when looking only at the satisfiable instances. 
+%HH: <- briefly outline main findings of MoHoo15 (DONE); focus on differences between complete and incomplete solvers; mention names of solvers and give references for them (from MuHoo15). Reword the following to build on these results (DONE):
+
+We later expanded this analysis to two classes of random 4-SAT instances. This work, described in detail in Section~5.4 of \cite{Mu15}, yielded several interesting results. For random 4-SAT phase-transition instances, an exponential model with $b \approx  1.02$ best fit the scaling for BalancedZ, whereas we needed to add a root-exponential model (which was fitted with $b \approx 2.8$ for WalksSAT/SKC and $b \approx  1.6$ for probSAT) to accurately describe the scaling for the other two SLS-based, incomplete SAT solvers. The DPLL-based, complete solvers continued to demonstrate scaling behaviour well characterized by exponential models; however, the degree of the model ($b \approx 1.1$) did increase for these models compared to that for 3-SAT instances. We also studied WalkSAT/SKC and kcnfs on a class of less-constrained random 4-SAT instances believed to be intrinsically challenging. We showed that both scale significantly better than on phase-transition random instances, in that a polynomial model best describes the observed performance scaling.
 
 %HH: modified:
 Of course, one may wonder how all these results compare to those produced by the improved version of ESA presented in this work.
-We recall that the only change to the methodology underlying ESA is the addition of the nested bootstrap sampling procedure to handle multiple independent runs of a randomized algorithm on a given problem instance.  
-%HH: <- is this true? please check carefully against section 2 and modify here as needed. I am specifically worried about the modified interpretation procedure (TODO)
-Unfortunately, the only remaining copies of the data from earlier studies contain per-instance median running times, so we were unable to perform direct comparisons of the earlier and most recent versions of ESA on the original data. We therefore reran EAX on the same instance set used by \citet{??}, performing 11 independent runs per instance.
-On this data, the version of ESA described here yielded results that are qualitatively very similar to those reported by \citet{??}. 
-%HH: <- fill in references.
-We observed that sizes of the bootstrap confidence intervals for the observed running times on challenge instances increased by 4.2\% on average, where the size of the interval is defined as its upper limited divided by its lower bound. Similarly, the size of the confidence intervals for the square-root exponential model that best describes the running times increased by an 0.1\% on average. 
-This is unsurprising, since the additional resampling over multiple independent runs per instance allows us to capture additional variability in the scaling models due to randomisation of the target algorithm, whereas previously, the statistical nature of the observed madian running times was not taken into account.
+The biggest change to the methodology underlying ESA is the addition of the nested bootstrap sampling procedure to handle multiple independent runs of a randomized algorithm on a given problem instance. 
+Unfortunately, the only remaining copies of the data from earlier studies contain per-instance median running times, so we were unable to perform direct comparisons of the earlier and most recent versions of ESA on the original data. We therefore reran EAX on the same TSP RUE instance set (using the improved optimality results from Mu~\cite{Mu15}), but this time we performed 11 independent runs per instance.
+On this data, the version of ESA described here yielded results that are qualitatively very similar to those reported in Mu~\etal{}.~\cite{MuEtAl16}. We observed that sizes of the bootstrap confidence intervals for the observed running times on challenge instances increased by 4.2\% on average, where the size of the interval is defined as its upper limited divided by its lower bound. Similarly, the size of the confidence intervals for the square-root exponential model that best describes the running times increased by an 0.1\% on average. 
+This is unsurprising -- we expect an increase in confidence interval size because the resampling over multiple independent runs per instance allows us to capture additional variability in the scaling models due to randomisation of the target algorithm, whereas previously, the statistical nature of the observed median running times was not taken into account, and the relatively small size of the increase is consistent with our observations in Section~\ref{sec:Stress Testing}.
+The only other change we made to ESA's methodology was to include for the first time the decision model described in Section~\ref{sec:auto-interpretation} used to automatically summarize the scaling results. However, while this analysis augments the previous scaling analysis results, it does not change them.
+%HH: <- is this true? please check carefully against section 2 and modify here as needed. I am specifically worried about the modified interpretation procedure (DONE)
+%YP: As far as I am aware (considering that I did not perform the previous analysis myself) it is true that these are the only two changes. I didn't mention this one previously because as far as I have seen in all previous work, there has never been any explicit reference to the statements ESA made using zongxu's previous decision model. Similar statements were made, but they were always supported with additional data, rather than being cited as ESA's summary.
 %(note that there were significantly more instances available for each support instance size than for the  challenge instance sizes, hence the uncertainty of the fitted models is much smaller than the uncertainty of the challenge instance sizes). 
 %By properly handling the uncertainty from independent runs of a randomized target algorithm ESA is less likely to obtain false-negative results by rejecting the correct scaling model class; however, in our experiments we have not yet observed a scenario where using the old version of ESA rejected a scaling model when the current one fails to do so.
 
@@ -732,7 +720,7 @@ We presented a rigorous analysis of ESA's performance on several types of challe
 In many cases, if ESA's output appears unreliable (\eg{}, the size of predicted bootstrap intervals is large for all of the fitted models), more data is needed -- perhaps running times for more instance sizes, larger challenge instance sizes, more instances per size or more independent runs per instance. 
 In particular, we found that increasing the number of instances per instance size is a more cost-effective means of increasing the power of the statistical analyses performed by ESA than increasing the number of independent runs per instance. 
 In addition, increasing the extrapolation distance by using larger challenge instance sizes is one of the most reliable (albeit costly) means to increase ESA's ability to discriminate between different scaling models. 
-%HH: <- reworded, make sure you agree (TODO)
+%HH: <- reworded, make sure you agree (DONE)
 Based on our extensive empirical analysis, we also caution against using small numbers of support instance sizes, since this can make it challenging or impossible to identify detrimental effects of lower-order terms or outliers on the results obtained from ESA.
 From our experience, we recommend to use around 11 support instance sizes, although the exact number required varies between application scenarios. 
 
@@ -773,18 +761,18 @@ This could lead to an enhanced version of ESA that could then be integrated into
 
 
 \begin{acks}
-YP was supported by an NSERC Vanier Scholarship. HH acknowledges funding through an NSERC Discovery Grant, CFI JLEF funding and startup funding from Universiteit Leiden. \todo{Did Zongxu have funding that needs to be added here? HH: I don't think so.}
+YP was supported by an NSERC Vanier Scholarship. HH acknowledges funding through an NSERC Discovery Grant, CFI JLEF funding and startup funding from Universiteit Leiden.
 \end{acks}
 
-\bigskip
+%\bigskip
 % TODO: will be deleted and changed to Acknowledgements in the final version
 
 
-\noindent
-\footnotesize
-\textbf{Note to reviewers:} 
-Two of the three case-studies mentioned
-are unpublished and only appear in the M.Sc. thesis of Mu. \note{Do we actually even need this at all? I think there are enough contributions to this paper that the ``successful applications of ESA'' could almost be moved into a section call ``related work'', that combines it with some of the material from the introduction. HH: IMO, successful applications are very important, because otherwise, we only talk about results on artificial data, showing limitations. But the note to reviewers is not needed if these results are correctly framed (with pointers to the thesis) in Section 7.}
+%\noindent
+%\footnotesize
+%\textbf{Note to reviewers:} 
+%Two of the three case-studies mentioned
+%are unpublished and only appear in the M.Sc. thesis of Mu. \note{Do we actually even need this at all? I think there are enough contributions to this paper that the ``successful applications of ESA'' could almost be moved into a section call ``related work'', that combines it with some of the material from the introduction. HH: IMO, successful applications are very important, because otherwise, we only talk about results on artificial data, showing limitations. But the note to reviewers is not needed if these results are correctly framed (with pointers to the thesis) in Section 7. YP: Makes sense, I think it does improve the paper the way it is done now.}
 
 
 
