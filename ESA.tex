@@ -34,6 +34,7 @@
 %\renewcommand{\todo}[1]{}
 \newcommand{\yp}[1]{\textcolor{blue}{#1}}
 \newcommand{\note}[1]{\textcolor{green}{[Note: #1]}}
+\renewcommand{\note}[1]{}
 \newcommand{\append}[1]{\textcolor{violet}{[Appendix?] #1}}
 \newcommand{\zm}[1]{#1}
 \newcommand{\hide}[1]{}
@@ -118,7 +119,7 @@ An improvement to this practice was introduced by McGeoch \etal~\cite{McgEtAl02}
 
 Somewhat related to our work are methods designed to perform algorithm profiling that can automatically extract notions of problem instance size and algorithm running time; however, even these rely on the simple methods we have described above~\cite{ZapHau12,CopEtAl12,CopEtAl14}. 
 Ultimately, the goal of performing empirical running time scaling analysis is to obtain estimates or bounds on how well we can expect an algorithm to perform for larger problem instance sizes than those used to perform the analysis.
-However, neither the work by McGeoch \etal~\cite{McgEtAl02} nor simple curve-fitting procedures address the  question how much faith we should have in the accuracy of the performance extrapolations obtained from empirical models of performance scaling.
+However, neither the work by McGeoch \etal~\cite{McgEtAl02} nor simple curve-fitting procedures address the question of how much faith we should have in the accuracy of the performance extrapolations obtained from empirical models of performance scaling.
 
 A significant advance in empirical running time scaling analysis was achieved by Hoos~\cite{Hoo09}, who introduced a new methodology to address both previously ignored or poorly handled challenges: running time variances and extrapolation accuracy.
 They do this by using a complex bootstrap sampling procedure to handle variability in running time in a statistically meaningful way, and by assessing extrapolation accuracy using a set of ``challenge'' instances withheld during the model fitting.  
@@ -131,9 +132,9 @@ ESA also automatically interprets the results and assesses whether a model descr
 Many state-of-the-art solvers for challenging computational problems are highly heuristic, so their performance scaling can typically not be characterized with any reasonable precision using theoretical approaches.
 In this situation, empirical scaling analysis, based on advanced statistical techniques, is the method of choice. 
 ESA makes such an approach broadly and conveniently accessible. 
-For example, the methodology underlying ESA has previously been applied to state-of-the-art local search algorithms for Euclidean TSP instances~\cite{DubEtAl15}, and we applied a prototype of ESA to study the empirical scaling of high-performance SAT solvers~\cite{MuHoo15}, which we later extended to two classes of 4-SAT instances~\cite{Mu15}. 
-We have also used earlier versions of ESA to perform empirical analysis of two inexact TSP solvers and to investigate the impact of automated algorithm configuration on their empirical running time scaling~\cite{MuEtAl16,Mu15}. 
-More recently, we have used ESA to extend the analysis of these cutting-edge inexact TSP algorithms to compare their scaling with that of a state-of-the-art exact TSP algorithm~\cite{MuEtAl17}.
+For example, the methodology underlying ESA has previously been applied to state-of-the-art local search algorithms for Euclidean TSP instances~\cite{DubEtAl15}, and a prototype of ESA was used to study the empirical scaling of high-performance SAT solvers~\cite{MuHoo15}, which were later extended to two classes of 4-SAT instances~\cite{Mu15}. 
+Earlier versions of ESA have also been used to perform empirical analysis of two inexact TSP solvers and to investigate the impact of automated algorithm configuration on their empirical running time scaling~\cite{MuEtAl16,Mu15}. 
+ESA has also been used to extend the analysis of these cutting-edge inexact TSP algorithms to compare their scaling with that of a state-of-the-art exact TSP algorithm~\cite{MuEtAl17}.
 
 We believe that ESA will prove to be useful for other researchers who want to study the empirical time complexity of other algorithms. ESA is available as an easy-to-use on-line service at \url{www.cs.ubc.ca/labs/beta/Projects/ESA} and can also be downloaded and installed locally as a command-line tool with additional functionality.
 
@@ -188,7 +189,7 @@ Here, we further extend the original methodology to accurately handle variance b
 %\subsection{Automated Interpretation of Scaling Results}
 \label{sec:auto-interpretation}
 
-ESA automatically generates interpretations for the results of the scaling analysis. This is done by assessing how well a model fits the given challenge data, based on the percentage of challenge instance sizes for which the model predicts the corresponding running times reasonably accurately. If a model produces good predictions for most challenge sizes, then the model should be accepted as a good fit. Technically, we define a very good prediction, or a \emph{strongly consistent prediction}, as one for which the bootstrap confidence interval for the model performance prediction contains the confidence interval for observed challenge statistic, and we define a good prediction, or a \emph{weakly consistent prediction}, as one for which the confidence intervals for the predicted and observed performances are overlapping.
+ESA automatically generates interpretations for the results of the scaling analysis. This is done by assessing how well a model fits the given challenge data, based on the percentage of challenge instance sizes for which the model predicts the corresponding running times reasonably accurately. If a model produces good predictions for most challenge sizes, then the model should be accepted as a good fit. Technically, we define a very good prediction, or a \emph{strongly consistent prediction}, as one for which the bootstrap confidence interval for the model performance prediction contains the confidence interval for the observed challenge statistic, and we define a good prediction, or a \emph{weakly consistent prediction}, as one for which the confidence intervals for the predicted and observed performances are overlapping.
 
 Our interpretation procedure especially emphasizes the challenge points for larger instance sizes, as those provide more information regarding whether the model predictions scale with instance size. We designed the procedure based on extensive experiments with several algorithms (both real and artificial), to produce statements similar to those that would be made by an expert upon viewing a plot of the fitted models. Each statement is determined using the number of model predictions that are strongly and weakly consistent with the observations, so the procedure is best viewed as a heuristic grounded in a statistical method. The detailed criteria are as follows:
 %HH: I've made some changes in the following, in light of the fact that we technically define consistency etc. for predictions, not for intervals (although we do it based on confidence intervals) - DONE: check
@@ -269,7 +270,7 @@ These criteria are combined into the fully automated interpretation procedure il
 \section{Running ESA}
 \label{sec:Implementation and Use}
 
-ESA implements the methodology described in Section~\ref{sec:method} in Python 2.7, also making use of gnuplot and \LaTeX{} to automatically generate and compile an easy-to-read technical report (in the form of a PDF file) containing detailed empirical scaling analysis results presented in tables and figures and their interpretation using our new procedure outline in Section~\ref{sec:auto-interpretation}.
+ESA implements the methodology described in Section~\ref{sec:method} in Python 2.7, also making use of gnuplot and \LaTeX{} to automatically generate and compile an easy-to-read technical report (in the form of a PDF file) containing detailed empirical scaling analysis results presented in tables and figures and their interpretation using our new procedure outlined in Section~\ref{sec:auto-interpretation}.
 
 %\subsection{Input}
 \label{sec:ESA-Input}
@@ -282,21 +283,23 @@ In this example, multiple running times are provided for each instance, each of 
 
 \begin{figure}[t]
 \begin{lstlisting}[basicstyle={\scriptsize\ttfamily}]
-#instance, size, datum (running time), datum, datum
-portgen-500-1000.tsp, 500, 2.3, 2.54, 2.09
-portgen-500-100.tsp, 500, 2.58, 2.28, 2.71
-portgen-500-101.tsp, 500, 2.36, 2.44, 2.53
+#instance, size, datum (running time), datum, ...
+500-1.tsp, 500, 1.60276, 1.54476, ...
+500-2.tsp, 500, 1.52777, 1.42378, ...
+500-3.tsp, 500, 1.41978, 1.53777, ...
 ...
-portgen-600-1000.tsp, 600, 3.4, 3.54, 4.01
+500-1000.tsp, 500, 1.72774, 1.72074, ..
+600-1.tsp, 600, 3.45747, 3.2595, ...
+600-2.tsp, 600, 1.92, 2.35964, ...
 ...
-portgen-4500-10.tsp, 4500, 727.68, inf, 801.32
-portgen-4500-11.tsp, 4500, inf, inf, inf
-...
+4500-96.tsp, 4500, 1132.75, 2436.47, ...
+4500-97.tsp, 4500, 227.771, 1027.32, ...
+4500-99.tsp, 4500, 399.643, 188.184, ...
 #instances,4000,100
 #instances,4500,100
 \end{lstlisting}
 \vspace*{-3mm}
-\caption{Example input file for ESA, where ``...'' represents omitted lines analogous to those shown.}\label{fig:Excerpt-ESA-input}
+\caption{Example input file for ESA, where ``...'' represents omitted lines analogous to those shown. Data shown is from EAX~\cite{NagKob13} on RUE instances.\label{fig:Excerpt-ESA-input}}
 \end{figure}
 
 ESA also takes as input a configuration file, containing details on the target algorithm (algName), the instance distribution (instName), the number of support instance sizes (numTrainingData), \emph{etc.}  
@@ -322,22 +325,22 @@ Users of ESA can also modify the formatting of the plots used for graphically pr
 \begin{itemize}
 \item Two tables showing statistics of running times for support and challenge data, respectively, to summarize the data set. An example of the support data summary is illustrated in Table~\ref{tab:ESA-support}.
 \begin{table}[t]
-\caption{Support data example} \label{tab:ESA-support}
+\caption{Support data summary for EAX on RUE instances \label{tab:ESA-support}}
 \begin{centering}
 \scalebox{0.75}{%
 \begin{tabular}{c|cccc}
 \hline
 $n$ & 500 & 600 & $\cdots$ & 1500 \tabularnewline
 \hline
-\# instances & 1000 & 1000 & & 1000 \tabularnewline
-\# running times & 1000 & 1000 &  & 1000 \tabularnewline
-mean & $2.67$ & $4.154$ &  & $34.06$ \tabularnewline
-coefficient of variation & $0.3943$ & $0.8558$ &  & $1.226$ \tabularnewline
-Q(0.1) & $2.24$ & $3.26$ & $\cdots$ & $19.17$ \tabularnewline
-Q(0.25) & $2.35$ & $3.42$ &  & $20$ \tabularnewline
-median & $2.49$ & $3.61$ &  & $21.57$ \tabularnewline
-Q(0.75) & $2.64$ & $3.84$ &  & $27.29$ \tabularnewline
-Q(0.9) & $2.84$ & $4.18$ &  & $57$ \tabularnewline
+\# instances & 1000 & 1000 & $\cdots$ & 1000 \tabularnewline
+\# running times & 1000 & 1000 & $\cdots$ & 1000 \tabularnewline
+mean & $1.901$ & $2.951$ & $\cdots$ & $29.15$ \tabularnewline
+coefficient of variation & $0.4569$ & $1.05$ & $\cdots$ & $6.151$ \tabularnewline
+Q(0.1) & $1.495$ & $2.111$ & $\cdots$ & $10.84$ \tabularnewline
+Q(0.25) & $1.601$ & $2.253$ & $\cdots$ & $11.58$ \tabularnewline
+median & $1.73$ & $2.516$ & $\cdots$ & $13.21$ \tabularnewline
+Q(0.75) & $1.917$ & $2.774$ & $\cdots$ &  $24.97$ \tabularnewline
+Q(0.9) & $2.08$ & $3.181$ & $\cdots$ & $34.69$ \tabularnewline
 \hline
 \end{tabular}}\medskip{}
 \par
@@ -347,7 +350,7 @@ Q(0.9) & $2.84$ & $4.18$ &  & $57$ \tabularnewline
 \item A table presenting fitted models and corresponding root mean squared error (RMSE) values, which can be used to easily see which model best fits the data according to the challenge RMSE (which is highlighted in boldface), as illustrated
 in Table~\ref{tab:ESA-fitted-models}.
 \begin{table}[t]
-\caption{Fitted models example} \label{tab:ESA-fitted-models}
+\caption{Scaling models fitted to EAX RUE Instance data \label{tab:ESA-fitted-models}}
 \begin{centering}
 \scalebox{0.75}{%
 \begin{tabular}{ccccc}
@@ -356,12 +359,12 @@ in Table~\ref{tab:ESA-fitted-models}.
  &  &  & (support)  & (challenge)\tabularnewline
 \hline
 \hline
-\multirow{3}{*}{EAX} & Exp. Model & $1.6504\times 1.0017^{x}$ & $7.1101$ & $\left[1421.6,1678.1\right]$ \tabularnewline
- & RootExp. Model & $\mathbf{0.24807\times 1.1229^{\sqrt{x}}}$ & $\mathbf{2.298}$ & $\mathbf{\left[26.147,182.98\right]}$ \tabularnewline
- & Poly. Model & $1.9222\times10^{-5}\times x^{1.9053}$ & $0.098977$ & $\left[159.78,385.31\right]$ \tabularnewline
+\multirow{3}{*}{EAX} & Exp. Model & $1.0511\times 1.0017^{x}$ & $1.1903$ & $\left[674.26,864.85\right]$ \tabularnewline
+ & RootExp. Model & $\mathbf{0.15777\times 1.1215^{\sqrt{x}}}$ & $\mathbf{0.22553}$ & $\mathbf{\left[24.586,183.39\right]}$ \tabularnewline
+ & Poly. Model & $1.409\times10^{-5}\times x^{1.8788}$ & $0.11865$ & $\left[122.17,300.04\right]$ \tabularnewline
 \hline
-\end{tabular}%
-}\medskip{}
+\end{tabular}}%
+\medskip{}
 \par
 \end{centering}
 \end{table}
@@ -373,32 +376,32 @@ in Table~\ref{tab:ESA-fitted-models}.
 
 \par\end{centering}
 
-\caption{Example output of ESA -- running times, fitted models and corresponding bootstrap confidence intervals.}\label{fig:ESA-fitted-models}
+\caption{Example output of ESA for EAX on RUE instances -- running times, fitted scaling models and corresponding bootstrap confidence intervals.}\label{fig:ESA-fitted-models}
 \end{figure*}
 
-\item A figure showing the residues of the fitted models, which helps the user easily see trends in the residues of the fitted models, as illustrated in Figure~\ref{fig:ESA-fitted-residues}.
+\item A figure showing the residues of the fitted models, which helps the user easily identify trends, as illustrated in Figure~\ref{fig:ESA-fitted-residues}.
 \begin{figure*}[t]
 \noindent \begin{centering}
 \includegraphics[width=0.7\textwidth]{EAX_fittedResidues} \vspace{-5mm}
 
 \par\end{centering}
 
-\caption{Example output of ESA -- residues of the fitted models}\label{fig:ESA-fitted-residues}
+\caption{Example output of ESA for EAX on RUE Instances -- residues of the fitted models.}\label{fig:ESA-fitted-residues}
 \end{figure*}
 
 
-\item A table of bootstrap confidence intervals for all model parameters, which allows a user to assess the uncertainty in the fitted models and perhaps accept or reject hypotheses about whether or not empirical observations match theoretical expectations about an algorithm's scaling. An example is shown in Table~\ref{tab:ESA-bootstrap-paras}.
+\item A table of bootstrap confidence intervals for all model parameters, which allows a user to assess the uncertainty in the fitted models and perhaps reject (or fail to reject) hypotheses about whether or not empirical observations match theoretical expectations about an algorithm's scaling. An example is shown in Table~\ref{tab:ESA-bootstrap-paras}.
 \begin{table}[t]
 \begin{centering}
-\caption{\label{tab:ESA-bootstrap-paras}Model confidence intervals example}
+\caption{\label{tab:ESA-bootstrap-paras}Confidence intervals for scaling models from Table~\ref{tab:ESA-fitted-models}}
 \scalebox{0.75}{%
 \begin{tabular}{cc|cc}
 \hline
 Solver  & Model  & Confidence interval of $a$  & Confidence interval of $b$ \tabularnewline
 \hline
-\multirow{3}{*}{EAX} & Exp. & $\left[1.6182,1.6777\right]$ & $\left[1.0017,1.0018\right]$ \tabularnewline
- & RootExp. & $\left[0.23777,0.2565\right]$ & $\left[1.1218,1.1244\right]$ \tabularnewline
- & Poly. & $\left[1.6402\times10^{-5},2.1752\times10^{-5}\right]$ & $\left[1.8875,1.9281\right]$ \tabularnewline
+\multirow{3}{*}{EAX} & Exp. & $\left[1.0177,1.079\right]$ & $\left[1.0017,1.0017\right]$ \tabularnewline
+ & RootExp. & $\left[0.14835,0.16531\right]$ & $\left[1.1198,1.1236\right]$ \tabularnewline
+ & Poly. & $\left[1.1187\times10^{-5},1.6711\times10^{-5}\right]$ & $\left[1.8542,1.9122\right]$ \tabularnewline
 \hline
 \end{tabular}%
 }\medskip{}
@@ -412,15 +415,15 @@ Solver  & Model  & Confidence interval of $a$  & Confidence interval of $b$ \tab
 
 \begin{table}[t]
 \begin{centering}
-\caption{Model RMSE example}\label{tab:ESA-bootstrap-RMSE}
+\caption{Confidence intervals for RMSE of EAX scaling models \label{tab:ESA-bootstrap-RMSE}}
 \scalebox{0.75}{%
 \begin{tabular}{cc|cc|cc}
 \hline
  \multirow{2}{*}{Solver} & \multirow{2}{*}{Model} & \multicolumn{2}{c|}{Support RMSE}  & \multicolumn{2}{c}{Challenge RMSE} \tabularnewline & & Median & Confidence Interval & Median & Confidence Interval \tabularnewline\hline
 \hline
-\multirow{3}{*}{EAX} & Exp. & $1.0862$ & $\left[1.0286,1.1404\right]$ & $1577.3$ & $\left[1209.6,1801.1\right]$ \tabularnewline
- & RootExp. & $\mathbf{0.61754}$ & $\mathbf{\left[0.56284,0.67104\right]}$ & $\mathbf{71.045}$ & $\mathbf{\left[12.057,394.81\right]}$ \tabularnewline
- & Poly. & $0.15889$ & $\left[0.11768,0.2076\right]$ & $251.38$ & $\left[121.37,592.91\right]$ \tabularnewline
+\multirow{3}{*}{EAX} & Exp. & $0.45758$ & $\left[0.40345,0.51484\right]$ & $780.07$ & $\left[417.88,980.96\right]$ \tabularnewline
+ & RootExp. & $\mathbf{0.20977}$ & $\mathbf{\left[0.16623,0.28264\right]}$ & $\mathbf{82.313}$ & $\mathbf{\left[11.721,468.78\right]}$ \tabularnewline
+ & Poly. & $0.21901$ & $\left[0.15746,0.28357\right]$ & $200.36$ & $\left[95.001,574.23\right]$ \tabularnewline
 \hline
 \end{tabular}%
 }\medskip{}
@@ -436,7 +439,7 @@ observed and predicted running times, one for support data and the
 other for challenge data. These tables allow the user to easily identify which model predictions are weakly or strongly consistent with the observations through boldface and asterisks. An example for challenge data is illustrated in Table~\ref{tab:ESA-bootstrap-challenge}.
 \begin{table*}[t]
 \begin{centering}
-\caption{Confidence intervals for observed and predicted challenge data performance}
+\caption{Confidence intervals for observed and predicted challenge data}
 \label{tab:ESA-bootstrap-challenge}
 \scalebox{0.75}{%
 \begin{tabular}{ccccc}
@@ -445,10 +448,10 @@ other for challenge data. These tables allow the user to easily identify which m
  &  & RootExp. model  & Point estimates  & Confidence intervals\tabularnewline
 \hline
 \hline
-\multirow{4}{*}{EAX} & 2000 & $\left[43.72,45.07\right]$ & $41.26$ & $\left[40.05,42.41\right]$ \tabularnewline
- & 2500 & $\mathbf{\left[80.21,83.7\right]}$ & $86.62$ & $\left[62.31,119.2\right]$ \tabularnewline
- & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$ \tabularnewline
- & 4500 & $\mathbf{\left[571.2,620.6\right]}$ & $\left[368.4,982.4\right]$ & $\left[257.9,1528\right]$ \tabularnewline
+\multirow{4}{*}{EAX} & 2000 & $\mathbf{\left[26.06,27.26\right]}$ & $26.19$ & $\left[25.3,27.92\right]$ \tabularnewline
+ & 2500 & $\mathbf{\left[47.37,50.44\right]}$ & $46.82$ & $\left[39.03,68.04\right]$ \tabularnewline
+ & $\cdots$ & $\cdots$ & $\cdots$ & $\cdots$  \tabularnewline
+ & 4500 & $\mathbf{\left[327.5,369.2\right]}$ & $\left[303.3,766.8\right]$ & $\left[207.5,1482\right]$ \tabularnewline
 \hline
 \end{tabular}%
 }\medskip{}
@@ -463,7 +466,7 @@ A snapshot of the report generated by ESA using the default {\LaTeX}
 template is shown in Figure \ref{fig:Snapshot-ESA-output}, the full report can be found at \url{www.cs.ubc.ca/labs/beta/Projects/ESA/samples/scaling\_EAX.pdf}. 
 \begin{figure*}[t]
 \begin{centering}
-\includegraphics[width=0.48\textwidth]{ESA_output_1}\includegraphics[width=0.48\textwidth]{ESA_output_2}
+\includegraphics[width=0.48\textwidth]{ESA_Snapshot_1}\includegraphics[width=0.48\textwidth]{ESA_Snapshot_2}
 \par\end{centering}
 
 \caption{A snapshot of the 7-page technical report generated by ESA.}\label{fig:Snapshot-ESA-output}
@@ -513,7 +516,7 @@ We discuss the additional challenges imposed by the presence of competing, lower
 
 We generated two data sets, using a polynomial and an exponential scaling model. For the polynomial model, we used $2.58\cdot 10^{-10} \cdot n^{3.37}$, which tended to fit some real running time data obtained from a TSP solver in preliminary experiments. 
 We fitted the exponential model to data from the polynomial model, to make the two models as similar as possible. 
-We generated running times for 21 instance sizes: 500, 600, ..., 1900, 2000, 2500, ..., 4500, and we used 16 support instance sizes, 5 challenge instance sizes, 500 instances per size and 10 independent runs per instance. 
+We generated running times for 21 instance sizes: 500, 600, ..., 1\,900, 2\,000, 2\,500, ..., 4\,500, and we used 16 support instance sizes, 5 challenge instance sizes, 500 instances per size and 10 independent runs per instance. 
 %HH: I am confused - does the following speak of the same instance set? I think not ... yet, no clear distinction is drawn ...
 %YP: I've re-organized the text a bit. Is it more clear now? (I am talking about the same two sets of instances -- one for the polynomial model and one from the exponential model)
 Since the instance sets are sampled from a probability distribution, we created a very large data set with 10\,000 instances per size and 100 independent runs per instance. 
@@ -529,7 +532,7 @@ For a substantially more detailed discussion and presentation of the results, pl
 \textbf{What happens when we decrease the number of instances per instance size?}
 We studied ESA's performance with 10, 20, 50, 100, 200, 500 and 1\,000 instances per instance size.
 We found that ESA can identify that the correct model fits the data even with a very small number of instances per size; however, this is mostly because the size of the bootstrap confidence intervals for the fitted model predictions grows much more quickly than the size of the confidence intervals for the observed challenge statistics, \ie{}, all of the fitted models fit the data very well for small instance sets. 
-For example, for the polynomial model on the polynomial data set and for 10 support instances per size, the median confidence interval size for predictions on challenge instance size 4\,500 was 247.2, where we measure the size of a confidence interval as the upper bound divided by the lower bound, \ie{}, the upper bound of the 95\% confidence interval was 247.2 times larger than the lower bound, for the median size of the confidence intervals determined  from our 1\,000 runs of ESA. 
+For example, for the polynomial model on the polynomial data set and for 10 support instances per size, the median confidence interval size for predictions on challenge instance size 4\,500 was 247.2, where we measure the size of a confidence interval as the upper bound divided by the lower bound. That is to say, the upper bound of the 95\% confidence interval was 247.2 times larger than the lower bound, for the median size of the confidence intervals determined  from our 1\,000 runs of ESA. 
 On the other hand, the median confidence interval size for observed running times on instance size 4\,500 was only 6.1, \ie{}, the interval for performance predictions was 40.2 times larger than that for observations.
 In comparison, when using 1\,000 instances per instance size, the interval for predictions was only 1.4 times larger than that for observations. 
 We observed qualitatively similar results for the other models and on the exponential data set. 
@@ -541,7 +544,7 @@ Then, to control the number of support instance sizes we varied their ``density'
 For example, when using 8 support instance sizes instead of 16, we used every second support instance size from our overall settings of $n=500, 600, ..., 2000$.
 
 To our surprise, we observed that ESA reported far less false positives in this case than when we reduced the number of instances per instance size, relative to the total number of support instances available. 
-For example, the square-root exponential model was reported to tend to fit the data 6.4\% of the time for the polynomial data set and 14.7\% of the time for the exponential data set when given only 3 support instance sizes, compared to 51.4\% and 51.0\% of the time, for the polynomial and exponential data sets respectively, when given 16 support instance sizes, but only 100 instances per size -- a roughly comparable total number of support instances.
+For example, the square-root exponential model was reported to tend to fit the data 6.4\% of the time for the polynomial data set and 14.7\% of the time for the exponential data set when given only 3 support instance sizes. In comparison, when given 16 support instance sizes, but only 100 instances per size -- a roughly comparable total number of support instances -- the square-root exponential model tended to fit the data to 51.4\% and 51.0\% of the time, for the polynomial and exponential data sets respectively.
 Specifically, when given 1\,600 instances spread between 16 support instance sizes, ESA reported false positives 8.0 times less often for the polynomial data set and 3.5 times less often for the exponential data set, than when given 1\,500 instances spread between 3 instance sizes. 
 
 However, while this may indicate a good option for saving on computational expenses, we advise extreme caution when analyzing results with ESA that use very small numbers of support instance sizes. 
@@ -569,7 +572,7 @@ Based on this striking difference, it is clear that if the time required to coll
 
 \textbf{What happens when we increase the extrapolation distance?}
 To isolate the effect of varying the extrapolation distance, we used only a single challenge instance size for these experiments. 
-We also used only 11 support instance sizes, 500, 600, ... 2\,000, instead of the 16 used in the previous experiments, in order to work with 5 different challenge instance sizes: 2\,500, 3\,000, ..., 4\,500.
+We also used only 11 support instance sizes, 500, 600, ..., 2\,000, instead of the 16 used in the previous experiments, in order to work with 5 different challenge instance sizes: 2\,500, 3\,000, ..., 4\,500.
 
 Overall, these results line up well with our intuition: the farther the extrapolation, the higher the probability that ESA will correctly identify the true scaling and reject incorrect scaling hypotheses. 
 Consider, for example, the exponential data set. The exponential model was reported to tend to fit or to fit the data very well in at least 99.8\% of runs for each location of the challenge instance size. 
@@ -628,7 +631,7 @@ The single-term model is reported to ``fit the data very well'', although it doe
 On the other hand, the two-term model, which is only reported to ``tend to fit the data'', does capture the true asymptotic scaling, with the confidence intervals of $b \in [1.50,2.30]$ and $d \in [4.78,7.06]$. 
 
 In this case, we also see that ESA had less trouble distinguishing between the two polynomial terms when fitting the two-term polynomial model, as evident from the disjoint bootstrap intervals for $b$ and $d$.
-However, we also see that the size of the bootstrap intervals for for the two-term model predictions has increased significantly (see Figure~\ref{fig:AA-competing-2-5-15-16s}). 
+However, we also see that the size of the bootstrap intervals for the two-term model predictions has increased significantly (see Figure~\ref{fig:AA-competing-2-5-15-16s}). 
 We believe this is causes by the fact that there is only a small number of instance sizes past the midpoint of the transition, and hence less data to help ESA recover from the effects of outliers. 
 When we decrease the number of support instance sizes (data not shown) we find that the confidence intervals for the model predictions are similar in size for the two-term polynomial model; however, the single-term model is unable to accurately capture the asymptotic scaling.
 
@@ -721,7 +724,8 @@ Our biggest change to the methodology underlying ESA is the addition of the nest
 Unfortunately, the only remaining copies of the data from earlier studies contain per-instance median running times, so we were unable to perform direct comparisons of the earlier and most recent versions of ESA on the original data. We therefore reran EAX on the same TSP RUE instance set (using the improved optimality results by Mu~\cite{Mu15}), but this time, we performed 11 independent runs per instance.
 On this data, the version of ESA described here yielded results that are qualitatively very similar to those reported by Mu~\etal{}.~\cite{MuEtAl16}. 
 We found that the sizes of the bootstrap confidence intervals for the observed running times on challenge instances increased by 4.2\% on average, where the size of the interval is defined as its upper bound divided by its lower bound. Similarly, the size of the confidence intervals for the square-root exponential model that best describes the running times increased by 0.1\% on average. 
-This is unsurprising -- we expect an increase in confidence interval size, because the resampling over multiple independent runs per instance allows us to capture additional variability in the scaling models due to randomization of the target algorithm, whereas previously, the statistical nature of the observed median running times was not taken into account, and the relatively small size of the increase is consistent with our observations in Section~\ref{sec:Stress Testing}.
+This is unsurprising -- we expect an increase in confidence interval size, because the resampling over multiple independent runs per instance allows us to capture additional variability in the scaling models due to randomization of the target algorithm, whereas previously, the statistical nature of the observed median running times was not taken into account. In addition, the relatively small size of the increase is consistent with our observations in Section~\ref{sec:Stress Testing}.
+
 The only other change we made to ESA's methodology was to include for the first time the decision model described in Section~\ref{sec:auto-interpretation} used to automatically summarize the scaling results. 
 However, while this enhancement augments the previous scaling analysis results and provides a well-defined, principled and rigorous way for assessing the scaling models fitted and assessed by ESA, it does not change any of the previous results. 
 As an example, the new procedure describes the exponential model predictions as being over-estimates for the observed scaling of the three SLS-based SAT solvers on the random 3-SAT phase transition instances and characterises the polynomial model as being a very good fit for the observations for WalkSAT/SKC and probSAT; however, because the polynomial model predictions are only weakly consistent with the observations for the largest two instance sizes for BalancedZ, it describes the polynomial scaling model for BalancedZ as being a fair fit. 
