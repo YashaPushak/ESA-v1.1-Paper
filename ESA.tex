@@ -72,8 +72,9 @@ and
 \thanks{Corresponding author. \printead{e3}.}}
 \runningauthor{Y. Pushak et al.}
 \address[A]{Department of Computer Science, \orgname{The University of British Columbia},
-BC, \cny{Canada}\printead[presep={\\}]{e1}}
-\address[B]{LIACS, \orgname{Universiteit Leiden}, \cny{The Netherlands}\printead[presep={\\}]{e2,e3}}
+BC, \cny{Canada}%\printead[presep={\\}]{}
+}
+\address[B]{LIACS, \orgname{Universiteit Leiden}, \cny{The Netherlands}\printead[presep={\\}]{e1,e2,e3}}
 
 \begin{abstract}
 The time complexity of algorithms, \ie, the scaling of the time required for solving a problem instance as a function of instance size, is of key interest in theoretical computer science and practical applications. In this work, we present a fully automated tool -- Empirical Scaling Analyzer (ESA) -- for performing sophisticated and detailed empirical scaling analyses. The methodological approach underlying ESA is based on a combination of automatic function fitting and bootstrap sampling; previous versions of the methodology have been used in prior work to characterize the empirical scaling behaviour of several prominent, high-performance SAT and TSP solvers. ESA is applicable to any algorithm or system, as long as running time data can be collected on sets of problem instances of various sizes. We present results from rigorous stress-testing to critically assess ESA on scenarios with challenging characteristics. 
@@ -350,7 +351,7 @@ Q(0.9) & $2.08$ & $3.181$ & $\cdots$ & $34.69$ \tabularnewline
 \item A table presenting fitted models and corresponding root mean squared error (RMSE) values, which can be used to easily see which model best fits the data according to the challenge RMSE (which is highlighted in boldface), as illustrated
 in Table~\ref{tab:ESA-fitted-models}.
 \begin{table}[t]
-\caption{Scaling models fitted to EAX RUE Instance data \label{tab:ESA-fitted-models}}
+\caption{Individual scaling models fitted to EAX on RUE Instances \label{tab:ESA-fitted-models}}
 \begin{centering}
 \scalebox{0.75}{%
 \begin{tabular}{ccccc}
@@ -415,7 +416,7 @@ Solver  & Model  & Confidence interval of $a$  & Confidence interval of $b$ \tab
 
 \begin{table}[t]
 \begin{centering}
-\caption{Confidence intervals for RMSE of EAX scaling models \label{tab:ESA-bootstrap-RMSE}}
+\caption{Bootstrap confidence intervals for RMSE of EAX scaling models \label{tab:ESA-bootstrap-RMSE}}
 \scalebox{0.75}{%
 \begin{tabular}{cc|cc|cc}
 \hline
@@ -687,7 +688,7 @@ Using the methodology underlying ESA, Hoos \& St\"utzle fitted an exponential mo
 Challenged on larger instance sizes, this model was rejected with 95\% confidence in favour of a square-root exponential model of the form $a\cdot b^{\sqrt{n}}$, with $b \approx 1.24$, indicating a much more benign scaling behaviour of Concorde than expected based on theoretical worst-case complexity results.
 
 %HH: reword the following to first outline DubEtAl15, then talk about additional results. I doubt we want to show any results for earlier versions of ESA, so take out all graphs etc. that are not produced by the latest version (DONE)
-In another application of the ESA methodolgy, Dubois \etal{} studied the scaling for the state-of-the-art inexact TSP solvers, EAX~\cite{NagKob13} and LKH~\cite{helsgaun2000effective} on the same set of RUE instances~\cite{DubEtAl15}.
+In another application of the ESA methodology, Dubois \etal{} studied the scaling for the state-of-the-art inexact TSP solvers, EAX~\cite{NagKob13} and LKH~\cite{helsgaun2000effective} on the same set of RUE instances~\cite{DubEtAl15}.
 %. However, since EAX and LKH are inexact solvers, they cannot prove the optimality of the solutions they find, and hence we recorded the running times required to find the optimal solution qualities previously found using Concorde. Unfortunately, some of the larger problem instances remained unsolved even with long runs of Concorde, which added additional uncertainty into the scaling analysis.
 They found evidence that the running time of EAX shows square-root exponential scaling, with small support for polynomial scaling with degree $b \approx 1.95$.
 %HH: <- Yasha, please fill in degree of polynomial (DONE)
